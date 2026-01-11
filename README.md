@@ -1,73 +1,95 @@
-# Welcome to your Lovable project
+# Shivprasad Dongapure – Developer Portfolio 🚀
 
-## Project info
+This is my personal portfolio website showcasing my skills, projects, experience, and achievements as a **Computer Engineering undergraduate and Software Developer**.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+The portfolio is designed to be clean, responsive, and professional, suitable for recruiters and internship applications.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🌐 Live Website
 
-**Use Lovable**
+👉 **Visit my portfolio:**  
+🔗 https://shiv-dev-folio-t2do.vercel.app
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🧑‍💻 About Me
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+I am a motivated **Computer Engineering student** with strong fundamentals in **Data Structures and Algorithms**, and hands-on experience in **Full Stack Development**, **Cloud Computing**, and **IoT**.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+I enjoy building scalable, real-world applications and continuously learning new technologies.
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 🛠️ Skills & Technologies
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- **Programming Languages:** JavaScript, Python, C, C++, SQL  
+- **Web Development:** React.js, Node.js, Express.js, REST APIs  
+- **Databases:** MongoDB, MySQL  
+- **Cloud & Tools:** AWS (S3), Git, GitHub, Postman, VS Code  
+- **Core CS:** Data Structures & Algorithms, OOPs  
+- **Domains:** Full Stack Development, Cloud Computing, IoT  
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+## 💼 Experience
 
-**Edit a file directly in GitHub**
+### Software Developer Intern – NTS Nihon Global
+- Worked on full stack development using React and Node.js  
+- Built and optimized RESTful APIs  
+- Collaborated in an Agile team environment  
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### IoT Intern – SIBIC
+- Developed IoT-based home automation systems  
+- Integrated sensors, microcontrollers, and cloud dashboards  
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🚀 Projects
 
-## What technologies are used for this project?
+### 🔹 NotegenAI – AI Lecture Summarizer
+- Converts lectures and PDFs into structured notes  
+- Uses Whisper + LLM pipeline  
+- Built using MERN stack  
 
-This project is built with:
+### 🔹 E-Commerce Web Application (Amazon Clone)
+- Full stack application with authentication, cart, and checkout  
+- React, Node.js, and MySQL based  
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### 🔹 CivicConnect – Smart City Issue Reporting System
+- Role-based dashboards for issue tracking  
+- AWS S3 integration for image uploads  
+- Optimized MongoDB queries for performance  
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 📄 Resume
 
-## Can I connect a custom domain to my Lovable project?
+📥 **Download my resume:**  
+[Click here](./public/SDEShiv.pdf)
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📬 Contact
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- **Email:** prasaddongapure7660@gmail.com  
+- **LinkedIn:** https://www.linkedin.com/in/shivprasad-dongapure-35760a290/  
+- **GitHub:** https://github.com/Shivprasadpravindongapure  
+- **Location:** India  
+
+---
+
+## 📌 Deployment
+
+The portfolio is built using modern frontend tools and can be deployed using:
+- **Vercel**
+- **Netlify**
+- **GitHub Pages**
+
+---
+
+## 📝 License
+
+This project is open for learning and personal use.  
+© 2026 Shivprasad Dongapure
