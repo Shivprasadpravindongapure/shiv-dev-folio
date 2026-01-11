@@ -19,7 +19,6 @@ const AboutSection = () => {
               <div className="absolute -inset-4 bg-gradient-to-br from-primary/10 to-accent/10 rounded-3xl rotate-3" />
               <div className="absolute -inset-4 bg-gradient-to-tr from-accent/10 to-primary/10 rounded-3xl -rotate-3" />
               
-<<<<<<< HEAD
               {/* Profile image */}
               <div className="relative bg-gradient-to-br from-secondary to-muted rounded-2xl overflow-hidden shadow-elevated aspect-square">
                 <img
@@ -27,16 +26,6 @@ const AboutSection = () => {
                   alt="Shivprasad Dongapure"
                   className="w-full h-full object-cover"
                 />
-=======
-              {/* Profile image placeholder */}
-              <div className="relative bg-gradient-to-br from-secondary to-muted rounded-2xl overflow-hidden shadow-elevated aspect-square flex items-center justify-center">
-                <div className="text-center p-8">
-                  <div className="w-32 h-32 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                    <span className="text-5xl font-heading font-bold gradient-text">SD</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">Profile Image</p>
-                </div>
->>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
               </div>
             </div>
           </div>
