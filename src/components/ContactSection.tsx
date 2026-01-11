@@ -5,19 +5,33 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
+<<<<<<< HEAD
     value: 'prasaddongapure7660@gmail.com',
     href: 'mailto:prasaddongapure7660@gmail.com',
+=======
+    value: 'shivprasad.dongapure@email.com',
+    href: 'mailto:shivprasad.dongapure@email.com',
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
   },
   {
     icon: Phone,
     label: 'Phone',
+<<<<<<< HEAD
     value: '+91 856657409',
     href: 'tel:+91856657409',
+=======
+    value: '+91 XXXXX XXXXX',
+    href: 'tel:+91XXXXXXXXXX',
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
   },
   {
     icon: MapPin,
     label: 'Location',
+<<<<<<< HEAD
     value: 'India',
+=======
+    value: 'Maharashtra, India',
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
     href: null,
   },
 ];
@@ -26,12 +40,20 @@ const socialLinks = [
   {
     icon: Github,
     label: 'GitHub',
+<<<<<<< HEAD
     href: 'https://github.com/Shivprasadpravindongapure',
+=======
+    href: 'https://github.com/shivprasad-dongapure',
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
   },
   {
     icon: Linkedin,
     label: 'LinkedIn',
+<<<<<<< HEAD
     href: 'https://www.linkedin.com/in/shivprasad-dongapure-35760a290/',
+=======
+    href: 'https://linkedin.com/in/shivprasad-dongapure',
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
   },
 ];
 
@@ -128,11 +150,15 @@ const ContactSection = () => {
                     className="w-full bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                     asChild
                   >
+<<<<<<< HEAD
                     <a
                       href="https://mail.google.com/mail/?view=cm&fs=1&to=prasaddongapure7660@gmail.com"
                       target="_blank"
                       rel="noopener noreferrer"
                     >
+=======
+                    <a href="mailto:shivprasad.dongapure@email.com">
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
                       <Mail className="w-5 h-5" />
                       Send an Email
                     </a>
@@ -143,7 +169,11 @@ const ContactSection = () => {
                     className="w-full border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
                     asChild
                   >
+<<<<<<< HEAD
                     <a href="/SDEShiv.pdf" download>
+=======
+                    <a href="/resume.pdf" download>
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
                       Download Resume
                     </a>
                   </Button>

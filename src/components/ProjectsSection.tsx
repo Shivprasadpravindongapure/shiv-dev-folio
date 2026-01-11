@@ -113,15 +113,25 @@ const ProjectsSection = () => {
                 {/* Actions */}
                 <div className="flex gap-3">
                   <Button variant="outline" size="sm" className="flex-1" asChild>
+<<<<<<< HEAD
                     <a href="https://github.com/Shivprasadpravindongapure" target="_blank" rel="noopener noreferrer">
                       <Github className="w-4 h-4" />
                       View Code
+=======
+                    <a href="#">
+                      <Github className="w-4 h-4" />
+                      Code
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
                     </a>
                   </Button>
                   <Button variant="default" size="sm" className="flex-1" asChild>
                     <a href="#">
                       <ExternalLink className="w-4 h-4" />
+<<<<<<< HEAD
                       Live Demo
+=======
+                      Demo
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
                     </a>
                   </Button>
                 </div>

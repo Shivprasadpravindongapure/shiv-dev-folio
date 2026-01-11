@@ -45,7 +45,11 @@ const HeroSection = () => {
               </a>
             </Button>
             <Button variant="heroOutline" size="xl" asChild>
+<<<<<<< HEAD
               <a href="/SDEShiv.pdf" download>
+=======
+              <a href="/resume.pdf" download>
+>>>>>>> 1752ef08abe6e62d447a95ec4f87501e83ae5408
                 <Download className="w-5 h-5" />
                 Download Resume
               </a>
