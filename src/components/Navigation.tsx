@@ -7,7 +7,10 @@ const navLinks = [
   { href: '#skills', label: 'Skills' },
   { href: '#experience', label: 'Experience' },
   { href: '#projects', label: 'Projects' },
-  { href: '#achievements', label: 'Achievements' },
+  { href: '#coding-stats', label: 'Coding Stats' },
+  { href: '#github-repos', label: 'GitHub' },
+  { href: '#resume', label: 'Resume' },
+  { href: '#technical-achievements', label: 'Achievements' },
   { href: '#contact', label: 'Contact' },
 ];
 

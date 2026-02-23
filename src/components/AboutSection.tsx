@@ -23,7 +23,7 @@ const AboutSection = () => {
               <div className="relative bg-gradient-to-br from-secondary to-muted rounded-2xl overflow-hidden shadow-elevated aspect-square">
                 <img
                   src="/DEV.JPG"
-                  alt="Shivprasad Dongapure"
+                  alt="Shivprasad Pravin Dongapure"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -36,19 +36,18 @@ const AboutSection = () => {
               About Me
             </span>
             <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-              Building the Future,<br />
-              <span className="gradient-text">One Line at a Time</span>
+              Hi, I'm <span className="gradient-text">Shivprasad Pravin Dongapure</span>
             </h2>
             
             <div className="space-y-4 text-muted-foreground leading-relaxed mb-8 animate-fade-up" style={{ animationDelay: '0.2s' }}>
               <p>
-                I'm a B.Tech Computer Engineering student with a passion for creating elegant solutions to complex problems. My journey in software development has equipped me with strong foundations in Data Structures, Algorithms, and Object-Oriented Programming.
+                Results-driven Computer Engineering student with expertise in Full-Stack Development, AI/ML applications, and scalable system architecture. Built production-ready applications serving 10K+ daily users.
               </p>
               <p>
-                With hands-on experience in React, Node.js, MongoDB, and MySQL, I specialize in building full-stack applications that are both performant and user-friendly. My interests span across Cloud Computing, AI, and building scalable distributed systems.
+                Currently pursuing B.Tech in Computer Engineering at Government College of Engineering, Jalgaon with a CGPA of 7.96. Passionate about competitive programming, having solved 120+ LeetCode problems and achieved Specialist rank on Codeforces.
               </p>
               <p>
-                I believe in writing clean, maintainable code and continuously learning new technologies to stay at the forefront of software development.
+                Seeking SDE Intern opportunities to apply my skills in React, Node.js, Python, and cloud technologies to build innovative solutions that make a real impact.
               </p>
             </div>
 

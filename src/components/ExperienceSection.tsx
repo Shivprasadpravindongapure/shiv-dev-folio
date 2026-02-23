@@ -4,26 +4,26 @@ const experiences = [
   {
     title: 'Software Developer Intern',
     company: 'NTS Nihon Global',
-    period: '2024',
+    period: 'June 2025 – July 2025',
     location: 'Remote',
     description: [
-      'Developed full-stack web applications using React.js and Node.js',
-      'Built and optimized RESTful APIs for improved performance',
-      'Collaborated with cross-functional teams in an Agile environment',
-      'Participated in code reviews and implemented best practices',
+      'Architected enterprise-grade full-stack applications using React, TypeScript, Node.js serving 10K+ daily users',
+      'Engineered production-ready REST APIs with 99.9% uptime, JWT authentication, and rate limiting',
+      'Collaborated in Agile/Scrum teams, improved test coverage to 85%',
+      'Implemented microservices architecture for scalable solutions'
     ],
     type: 'Full-time',
   },
   {
-    title: 'IoT Intern',
+    title: 'IoT Development Intern',
     company: 'SIBIC',
-    period: '2023',
-    location: 'On-site',
+    period: 'June 2022 – July 2022',
+    location: 'Kolhapur',
     description: [
-      'Worked on IoT-based home automation systems',
-      'Integrated multiple sensors with microcontrollers',
-      'Developed cloud dashboards for real-time monitoring',
-      'Created documentation for system architecture',
+      'Designed IoT-based home automation systems using Arduino/ESP32 with real-time device control',
+      'Integrated sensors and cloud monitoring dashboards for real-time data visualization',
+      'Developed automation workflows and remote monitoring modules with MQTT protocol',
+      'Created comprehensive documentation for system architecture'
     ],
     type: 'Internship',
   },

@@ -5,19 +5,19 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'prasaddongapure7660@gmail.com',
-    href: 'mailto:prasaddongapure7660@gmail.com',
+    value: 'Prasaddongapure7660@gmail.com',
+    href: 'mailto:Prasaddongapure7660@gmail.com',
   },
   {
     icon: Phone,
     label: 'Phone',
-    value: '+91 856657409',
-    href: 'tel:+91856657409',
+    value: '+91 8956657409',
+    href: 'tel:+918956657409',
   },
   {
     icon: MapPin,
     label: 'Location',
-    value: 'India',
+    value: 'Maharashtra, India',
     href: null,
   },
 ];

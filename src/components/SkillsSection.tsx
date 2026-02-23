@@ -3,34 +3,39 @@ import { Code, Globe, Database, Cloud, BookOpen, Layers } from 'lucide-react';
 const skillCategories = [
   {
     icon: Code,
-    title: 'Programming',
-    skills: ['JavaScript', 'Python', 'C', 'C++', 'SQL'],
+    title: 'Programming Languages',
+    skills: ['JavaScript', 'Django', 'Python', 'C++', 'SQL', 'Java'],
   },
   {
     icon: Globe,
-    title: 'Web Development',
-    skills: ['React.js', 'Node.js', 'Express.js', 'REST APIs', 'HTML/CSS'],
+    title: 'Frontend Technologies',
+    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'REST APIs'],
   },
   {
     icon: Database,
-    title: 'Databases',
-    skills: ['MongoDB', 'MySQL', 'Database Design', 'Query Optimization'],
+    title: 'Backend Technologies',
+    skills: ['Node.js', 'Express.js', 'Microservices', 'JWT'],
   },
   {
     icon: Cloud,
-    title: 'Cloud & Tools',
-    skills: ['AWS S3', 'Git', 'GitHub', 'Postman', 'VS Code'],
+    title: 'Databases',
+    skills: ['MongoDB', 'MySQL', 'PostgreSQL'],
   },
   {
     icon: BookOpen,
-    title: 'Core CS',
-    skills: ['Data Structures', 'Algorithms', 'OOPs', 'DBMS', 'OS'],
+    title: 'Cloud & DevOps',
+    skills: ['AWS (S3, EC2, Lambda)', 'Docker', 'Kubernetes', 'CI/CD', 'Git'],
   },
   {
     icon: Layers,
-    title: 'Domains',
-    skills: ['Full Stack Development', 'Cloud Computing', 'IoT', 'AI/ML'],
+    title: 'AI/ML',
+    skills: ['OpenAI APIs', 'LLM Integration', 'Whisper', 'NLP', 'Prompt Engineering'],
   },
+  {
+    icon: Code,
+    title: 'Core Skills',
+    skills: ['Data Structures', 'Algorithms', 'System Design', 'OOP', 'Agile', 'Scrum'],
+  }
 ];
 
 const SkillsSection = () => {
