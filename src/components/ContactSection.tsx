@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import { Mail, Phone, Github, Linkedin, MapPin, Send, MessageCircle, Sparkles, Rocket, Code, Heart, Star, Zap, Globe, Calendar, Clock, CheckCircle, Trophy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { motion } from 'framer-motion';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    subject: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,26 +21,23 @@ const ContactSection = () => {
     {
       icon: Mail,
       label: 'Email',
-      value: 'Prasaddongapure7660@gmail.com',
-      href: 'mailto:Prasaddongapure7660@gmail.com',
-      color: 'from-blue-500 to-cyan-500',
-      description: 'Drop me a line anytime'
+      value: 'prasaddongapure7660@gmail.com',
+      href: 'mailto:prasaddongapure7660@gmail.com',
+      color: 'from-orange-500 to-red-500' // Using existing Tailwind colors for the icon enclosure
     },
     {
       icon: Phone,
-      label: 'Phone',
+      label: 'Call Me',
       value: '+91 8956657409',
       href: 'tel:+918956657409',
-      color: 'from-green-500 to-emerald-500',
-      description: 'Available for opportunities'
+      color: 'from-blue-500 to-indigo-500'
     },
     {
       icon: MapPin,
       label: 'Location',
-      value: 'Maharashtra, India',
-      href: null,
-      color: 'from-purple-500 to-pink-500',
-      description: 'Open to remote work'
+      value: 'India',
+      href: 'https://maps.google.com/?q=India',
+      color: 'from-emerald-500 to-teal-500'
     },
   ];
 
@@ -80,7 +80,7 @@ const ContactSection = () => {
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
-      setFormData({ name: '', email: '', message: '' });
+      setFormData({ name: '', email: '', subject: '', message: '' }); // Reset subject field
       
       // Reset success message after 3 seconds
       setTimeout(() => setIsSubmitted(false), 3000);
@@ -157,65 +157,40 @@ const ContactSection = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <Badge className="mb-4 bg-gradient-to-r from-purple-500/10 to-pink-500/10 text-purple-600 border-purple-500/20 backdrop-blur-sm">
-            <MessageCircle className="w-4 h-4 mr-2" />
-            Get in Touch
+          <Badge className="mb-4 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 text-indigo-500 border-indigo-500/20">
+            <Mail className="w-4 h-4 mr-2" />
+            Get In Touch
           </Badge>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
-            Let's <span className="gradient-text bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 bg-clip-text text-transparent">Connect</span>
+          <h2 className="font-heading text-4xl md:text-5xl font-bold mb-4">
+            Let's <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-sm">Connect</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
             Ready to build something amazing together? I'm always excited to hear about new opportunities and collaborations!
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Contact Information */}
-          <motion.div 
-            className="space-y-6"
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <motion.h3 
-              className="text-2xl font-bold text-white mb-6"
-              variants={itemVariants}
-            >
-              Reach Out Anytime
-            </motion.h3>
-            
-            {contactInfo.map((item, index) => (
-              <motion.div 
-                key={item.label}
+        {/* Contact Layout */}
+        <div className="grid lg:grid-cols-5 gap-8">
+          
+          {/* Contact Info Cards */}
+          <div className="lg:col-span-2 space-y-4">
+            {contactInfo.map((info, index) => (
+              <motion.a
+                key={index}
+                href={info.href}
+                target={info.href.startsWith('http') ? "_blank" : "_self"}
+                rel={info.href.startsWith('http') ? "noopener noreferrer" : ""}
+                className="flex items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-card to-card/50 border border-border/50 hover:shadow-elevated hover:border-indigo-500/30 transition-all duration-500 group"
                 variants={itemVariants}
-                whileHover={{ scale: 1.02 }}
               >
-                <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50 hover:border-slate-600/50 transition-all duration-300 hover-lift group">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg bg-gradient-to-r ${item.color} group-hover:scale-110 transition-transform duration-300`}>
-                        <item.icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-lg font-semibold text-white mb-1">{item.label}</h4>
-                        {item.href ? (
-                          <motion.a
-                            href={item.href}
-                            className="text-muted-foreground hover:text-white transition-colors duration-300 block"
-                            whileHover={{ x: 5 }}
-                          >
-                            {item.value}
-                          </motion.a>
-                        ) : (
-                          <p className="text-muted-foreground">{item.value}</p>
-                        )}
-                        <p className="text-sm text-muted-foreground/70 mt-1">{item.description}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                <div className={`p-4 rounded-xl bg-gradient-to-br ${info.color} bg-opacity-10 text-white shadow-sm group-hover:scale-110 transition-transform duration-500`}>
+                  <info.icon className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="text-sm font-medium text-muted-foreground mb-1">{info.label}</div>
+                  <div className="font-semibold text-foreground group-hover:text-indigo-500 transition-colors">{info.value}</div>
+                </div>
+              </motion.a>
             ))}
 
             {/* Social Links */}
@@ -246,24 +221,15 @@ const ContactSection = () => {
                 ))}
               </div>
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Contact Form */}
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-          >
-            <Card className="bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-sm border-slate-700/50 hover:border-slate-600/50 transition-all duration-300">
-              <CardContent className="p-8">
-                <motion.h3 
-                  className="text-2xl font-bold text-white mb-6"
-                  variants={itemVariants}
-                >
-                  Send Me a Message
-                </motion.h3>
-                
+          <div className="lg:col-span-3">
+            <Card className="h-full bg-gradient-to-br from-card to-card/50 border-border/50 shadow-soft">
+              <CardHeader className="pb-4">
+                <CardTitle className="text-2xl font-bold font-heading">Send a Message</CardTitle>
+              </CardHeader>
+              <CardContent>
                 {isSubmitted ? (
                   <motion.div 
                     className="text-center py-12"
@@ -278,134 +244,73 @@ const ContactSection = () => {
                     <p className="text-muted-foreground">Thanks for reaching out. I'll get back to you soon!</p>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div>
-                      <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
-                        Your Name
-                      </label>
-                      <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      <div className="space-y-2">
+                        <Input 
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Your Name" 
+                          className="bg-background/50 border-border/50 focus:border-indigo-500/50 focus:ring-indigo-500/20 h-12 rounded-xl transition-all"
+                          required
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Input 
+                          type="email" 
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="Your Email" 
+                          className="bg-background/50 border-border/50 focus:border-indigo-500/50 focus:ring-indigo-500/20 h-12 rounded-xl transition-all"
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Input 
+                        name="subject"
+                        value={formData.subject}
                         onChange={handleChange}
+                        placeholder="Subject" 
+                        className="bg-background/50 border-border/50 focus:border-indigo-500/50 focus:ring-indigo-500/20 h-12 rounded-xl transition-all"
                         required
-                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
-                        placeholder="John Doe"
                       />
                     </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
-                        Your Message
-                      </label>
-                      <textarea
-                        id="message"
+                    <div className="space-y-2">
+                      <Textarea 
                         name="message"
                         value={formData.message}
                         onChange={handleChange}
+                        placeholder="Your Message..." 
+                        className="min-h-[120px] bg-background/50 border-border/50 focus:border-indigo-500/50 focus:ring-indigo-500/20 rounded-xl transition-all resize-none"
                         required
-                        rows={4}
-                        className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700/50 rounded-lg text-white placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-300 resize-none"
-                        placeholder="Tell me about your project or opportunity..."
                       />
                     </div>
-                    
-                    <motion.div variants={itemVariants}>
-                      <motion.div
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                      >
-                        <Button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="w-full py-4 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-600 hover:from-purple-700 hover:via-pink-700 hover:to-orange-700 text-white font-semibold rounded-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group"
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <div className="inline-flex items-center gap-2">
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                                Sending...
-                              </div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="inline-flex items-center gap-2">
-                                <Send className="w-5 h-5" />
-                                Send Message
-                                <Rocket className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                              </div>
-                            </>
-                          )}
-                        </Button>
-                      </motion.div>
-                    </motion.div>
+                    <Button 
+                      type="submit" 
+                      className="w-full h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-2">
+                          <Send className="w-4 h-4 animate-bounce" /> Sending...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Send className="w-4 h-4" /> Send Message
+                        </span>
+                      )}
+                    </Button>
                   </form>
                 )}
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
         </div>
 
-        {/* Call to Action */}
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          viewport={{ once: true }}
-        >
-          <Card className="bg-gradient-to-r from-purple-900/50 to-pink-900/50 backdrop-blur-sm border-purple-700/50 max-w-2xl mx-auto">
-            <CardContent className="p-8">
-              <div className="flex items-center justify-center gap-2 mb-4">
-                <Sparkles className="w-6 h-6 text-yellow-400" />
-                <h3 className="text-2xl font-bold text-white">Ready to Build Something Amazing?</h3>
-                <Sparkles className="w-6 h-6 text-yellow-400" />
-              </div>
-              <p className="text-muted-foreground mb-6 text-lg">
-                I'm always excited to collaborate on innovative projects and challenging opportunities.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <motion.a
-                  href="mailto:Prasaddongapure7660@gmail.com"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Mail className="w-5 h-5" />
-                  Email Me
-                </motion.a>
-                <motion.a
-                  href="https://www.linkedin.com/in/shivprasad-dongapure-35760a290/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-lg hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Linkedin className="w-5 h-5" />
-                  Connect on LinkedIn
-                </motion.a>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {/* Removed redundant secondary Call To Action block */}
       </div>
     </section>
   );

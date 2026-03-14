@@ -14,7 +14,8 @@ const projects = [
       '92% accuracy achieved',
       'Context-aware conversations'
     ],
-    color: 'from-primary/20 to-accent/20',
+    color: 'from-indigo-500/20 to-purple-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/Nyay-AI',
   },
   {
     icon: ShoppingCart,
@@ -28,7 +29,8 @@ const projects = [
       'End-to-end encryption',
       'JWT authentication'
     ],
-    color: 'from-accent/20 to-primary/20',
+    color: 'from-pink-500/20 to-orange-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/Chatify',
   },
   {
     icon: Building2,
@@ -42,7 +44,8 @@ const projects = [
       'Smooth animations',
       'Modern UI/UX'
     ],
-    color: 'from-primary/20 to-accent/20',
+    color: 'from-indigo-500/20 to-purple-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/shiv-dev-folio',
   },
   {
     icon: Github,
@@ -56,7 +59,8 @@ const projects = [
       'MQTT protocol',
       'Cloud monitoring'
     ],
-    color: 'from-accent/20 to-primary/20',
+    color: 'from-pink-500/20 to-orange-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/IoT-Home-Automation',
   },
   {
     icon: Sparkles,
@@ -70,7 +74,8 @@ const projects = [
       'OpenAI integration',
       'Note management'
     ],
-    color: 'from-primary/20 to-accent/20',
+    color: 'from-indigo-500/20 to-purple-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/NotegenAI',
   },
   {
     icon: Building2,
@@ -84,22 +89,23 @@ const projects = [
       'Problem solutions',
       'Competitive programming'
     ],
-    color: 'from-primary/20 to-accent/20',
+    color: 'from-pink-500/20 to-orange-500/20',
+    githubLink: 'https://github.com/Shivprasadpravindongapure/DSA-Solver',
   },
 ];
 
 const ProjectsSection = () => {
   return (
-    <section id="projects" className="section-padding gradient-hero">
+    <section id="projects" className="section-padding bg-gradient-to-b from-card to-background">
       <div className="container-narrow mx-auto">
         <div className="text-center mb-16">
-          <span className="text-sm font-semibold text-accent uppercase tracking-wider mb-4 block animate-fade-up">
+          <span className="text-sm font-semibold text-indigo-500 uppercase tracking-wider mb-4 block animate-fade-up">
             Featured Work
           </span>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 animate-fade-up" style={{ animationDelay: '0.1s' }}>
-            My <span className="gradient-text">Projects</span>
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-foreground mb-4 animate-fade-up" style={{ animationDelay: '0.1s' }}>
+            My <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-sm">Projects</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto animate-fade-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-muted-foreground max-w-2xl mx-auto animate-fade-up text-lg" style={{ animationDelay: '0.2s' }}>
             A selection of projects that demonstrate my technical skills and problem-solving abilities
           </p>
         </div>
@@ -113,27 +119,27 @@ const ProjectsSection = () => {
             >
               <div className={`absolute inset-0 bg-gradient-to-br ${project.color} rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
-              <div className="relative h-full p-6 lg:p-8 rounded-2xl bg-card border border-border shadow-soft group-hover:shadow-elevated transition-all duration-300 flex flex-col">
+              <div className="relative h-full p-6 lg:p-8 rounded-2xl bg-card border border-border/50 shadow-soft group-hover:shadow-elevated transition-all duration-500 flex flex-col z-10">
                 {/* Icon */}
-                <div className="p-4 rounded-2xl bg-accent/10 w-fit mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <project.icon className="w-8 h-8 text-accent" />
+                <div className={`p-4 rounded-2xl bg-gradient-to-br ${project.color} w-fit mb-6 group-hover:scale-110 transition-transform duration-500 shadow-sm`}>
+                  <project.icon className="w-8 h-8 text-foreground" />
                 </div>
 
                 {/* Content */}
                 <div className="flex-1">
-                  <h3 className="text-xl font-bold text-foreground font-heading mb-1 group-hover:text-primary transition-colors">
+                  <h3 className="text-2xl font-bold text-foreground font-heading mb-1 transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-sm text-accent font-medium mb-3">{project.subtitle}</p>
-                  <p className="text-muted-foreground text-sm leading-relaxed mb-6">
+                  <p className="text-sm font-semibold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent mb-4">{project.subtitle}</p>
+                  <p className="text-muted-foreground/90 text-sm leading-relaxed mb-6 font-body">
                     {project.description}
                   </p>
 
                   {/* Highlights */}
-                  <ul className="space-y-2 mb-6">
+                  <ul className="space-y-2.5 mb-8">
                     {project.highlights.map((highlight, i) => (
-                      <li key={i} className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <span className="w-1 h-1 rounded-full bg-accent" />
+                      <li key={i} className="flex items-center gap-3 text-sm text-muted-foreground/80">
+                        <span className="w-1.5 h-1.5 rounded-full bg-indigo-500/70" />
                         {highlight}
                       </li>
                     ))}
@@ -153,17 +159,11 @@ const ProjectsSection = () => {
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3">
-                  <Button variant="outline" size="sm" className="flex-1" asChild>
-                    <a href="https://github.com/Shivprasadpravindongapure" target="_blank" rel="noopener noreferrer">
-                      <Github className="w-4 h-4" />
-                      View Code
-                    </a>
-                  </Button>
-                  <Button variant="default" size="sm" className="flex-1" asChild>
-                    <a href="#">
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
+                <div className="flex gap-3 mt-auto">
+                  <Button variant="default" className="w-full bg-indigo-500 hover:bg-indigo-600 text-white transition-all shadow-md" asChild>
+                    <a href={project.githubLink} target="_blank" rel="noopener noreferrer">
+                      <Github className="w-4 h-4 mr-2" />
+                      View Repository
                     </a>
                   </Button>
                 </div>

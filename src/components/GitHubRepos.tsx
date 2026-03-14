@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { Github, Star, GitFork, ExternalLink, Code, Calendar, Users } from 'lucide-react';
+import { Github, Star, GitFork, ExternalLink, Code, Calendar, Users, GitBranch, Package, Eye, Clock } from 'lucide-react';
 
 interface GitHubRepo {
   id: number;
@@ -22,142 +22,114 @@ interface GitHubRepo {
   homepage: string | null;
   archived: boolean;
   size: number;
+  watchers_count: number;
+  open_issues_count: number;
+  default_branch: string;
+}
+
+interface GitHubStats {
+  totalRepos: number;
+  totalStars: number;
+  totalForks: number;
+  totalWatchers: number;
+  totalIssues: number;
+  languages: { [key: string]: number };
+  contributions: number;
+  followers: number;
+  following: number;
+  publicGists: number;
+  lastUpdated: string;
 }
 
 const GitHubRepos = () => {
   const [repos, setRepos] = useState<GitHubRepo[]>([]);
+  const [stats, setStats] = useState<GitHubStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchRepos = async () => {
+    const fetchGitHubData = async () => {
       try {
-        // Replace with your actual GitHub username
         const username = 'Shivprasadpravindongapure';
-        const response = await fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`);
         
-        if (!response.ok) {
-          throw new Error('Failed to fetch repositories');
+        // Fetch user stats and repos in parallel
+        const [userResponse, reposResponse] = await Promise.all([
+          fetch(`https://api.github.com/users/${username}`),
+          fetch(`https://api.github.com/users/${username}/repos?sort=updated&per_page=100`)
+        ]);
+
+        if (!userResponse.ok || !reposResponse.ok) {
+          throw new Error('Failed to fetch GitHub data');
         }
 
-        const data = await response.json();
-        
-        // Filter out archived repos and sort by stars
-        const filteredRepos = data
+        const userData = await userResponse.json();
+        const reposData = await reposResponse.json();
+
+        // Process repositories
+        const filteredRepos = reposData
           .filter((repo: GitHubRepo) => !repo.archived && repo.description)
           .sort((a: GitHubRepo, b: GitHubRepo) => b.stargazers_count - a.stargazers_count)
-          .slice(0, 9); // Show top 9 repos
+          .slice(0, 9);
+
+        // Calculate statistics
+        const languages: { [key: string]: number } = {};
+        let totalStars = 0;
+        let totalForks = 0;
+        let totalWatchers = 0;
+        let totalIssues = 0;
+
+        filteredRepos.forEach((repo: GitHubRepo) => {
+          totalStars += repo.stargazers_count;
+          totalForks += repo.forks_count;
+          totalWatchers += repo.watchers_count;
+          totalIssues += repo.open_issues_count;
+          
+          if (repo.language) {
+            languages[repo.language] = (languages[repo.language] || 0) + 1;
+          }
+        });
+
+        const githubStats: GitHubStats = {
+          totalRepos: userData.public_repos,
+          totalStars,
+          totalForks,
+          totalWatchers,
+          totalIssues,
+          languages,
+          contributions: 0, // Would need GraphQL API for this
+          followers: userData.followers,
+          following: userData.following,
+          publicGists: userData.public_gists,
+          lastUpdated: userData.updated_at
+        };
 
         setRepos(filteredRepos);
-      } catch (err) {
-        console.error('Error fetching GitHub repos:', err);
-        setError('Failed to load repositories. Showing demo data.');
+        setStats(githubStats);
         
-        // Demo data as fallback with your actual projects
-        setRepos([
-          {
-            id: 1,
-            name: 'Developer-Portfolio',
-            description: 'Modern responsive portfolio website built with React, Next.js, and Tailwind CSS featuring smooth animations and dark mode support.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/Developer-Portfolio',
-            stargazers_count: 12,
-            forks_count: 3,
-            language: 'JavaScript',
-            created_at: '2024-01-15T00:00:00Z',
-            updated_at: '2024-02-20T00:00:00Z',
-            topics: ['react', 'nextjs', 'tailwindcss', 'portfolio', 'framer-motion'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 145
-          },
-          {
-            id: 2,
-            name: 'Chatify',
-            description: 'Real-time messaging platform using Socket.io, React, Node.js with WebSocket optimization and end-to-end encryption.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/Chatify',
-            stargazers_count: 8,
-            forks_count: 2,
-            language: 'JavaScript',
-            created_at: '2023-08-10T00:00:00Z',
-            updated_at: '2024-02-18T00:00:00Z',
-            topics: ['react', 'nodejs', 'socket.io', 'websocket', 'encryption'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 98
-          },
-          {
-            id: 3,
-            name: 'Nyay-AI',
-            description: 'Enterprise legal advisor using Flask and LLaMA LLM with RAG architecture achieving 92% accuracy.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/Nyay-AI',
-            stargazers_count: 15,
-            forks_count: 4,
-            language: 'Python',
-            created_at: '2023-11-20T00:00:00Z',
-            updated_at: '2024-02-15T00:00:00Z',
-            topics: ['python', 'flask', 'llm', 'rag', 'nlp', 'legal-tech'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 167
-          },
-          {
-            id: 4,
-            name: 'NotegenAI',
-            description: 'AI-powered note-taking application with intelligent summarization and organization features.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/NotegenAI',
-            stargazers_count: 6,
-            forks_count: 1,
-            language: 'Python',
-            created_at: '2023-09-05T00:00:00Z',
-            updated_at: '2024-02-10T00:00:00Z',
-            topics: ['python', 'ai', 'nlp', 'openai', 'notes'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 76
-          },
-          {
-            id: 5,
-            name: 'IoT-Home-Automation',
-            description: 'IoT-based home automation system using Arduino/ESP32 with real-time device control and monitoring.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/IoT-Home-Automation',
-            stargazers_count: 10,
-            forks_count: 3,
-            language: 'C++',
-            created_at: '2023-10-12T00:00:00Z',
-            updated_at: '2024-02-08T00:00:00Z',
-            topics: ['arduino', 'esp32', 'iot', 'home-automation', 'mqtt'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 54
-          },
-          {
-            id: 6,
-            name: 'DSA-Solver',
-            description: 'Comprehensive Data Structures and Algorithms problem solver with solutions in multiple programming languages.',
-            html_url: 'https://github.com/Shivprasadpravindongapure/DSA-Solver',
-            stargazers_count: 18,
-            forks_count: 5,
-            language: 'Python',
-            created_at: '2023-07-18T00:00:00Z',
-            updated_at: '2024-02-05T00:00:00Z',
-            topics: ['data-structures', 'algorithms', 'python', 'leetcode', 'competitive-programming'],
-            license: { name: 'MIT' },
-            homepage: null,
-            archived: false,
-            size: 89
-          }
-        ]);
+      } catch (err) {
+        console.error('Error fetching GitHub data:', err);
+        setError('Failed to load GitHub data. Showing demo data.');
+        
+        // Fallback demo data
+        setStats({
+          totalRepos: 25,
+          totalStars: 156,
+          totalForks: 42,
+          totalWatchers: 89,
+          totalIssues: 18,
+          languages: { 'JavaScript': 8, 'Python': 6, 'TypeScript': 4, 'C++': 3, 'HTML': 2, 'CSS': 2 },
+          contributions: 847,
+          followers: 234,
+          following: 89,
+          publicGists: 12,
+          lastUpdated: new Date().toISOString()
+        });
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchRepos();
+    fetchGitHubData();
   }, []);
 
   const getLanguageColor = (language: string) => {
@@ -183,6 +155,13 @@ const GitHubRepos = () => {
       month: 'short', 
       day: 'numeric' 
     });
+  };
+
+  const formatNumber = (num: number) => {
+    if (num >= 1000) {
+      return (num / 1000).toFixed(1) + 'k';
+    }
+    return num.toString();
   };
 
   const containerVariants = {
@@ -214,7 +193,7 @@ const GitHubRepos = () => {
         <div className="container-narrow mx-auto px-6 lg:px-12">
           <div className="text-center mb-12">
             <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
-              Loading GitHub Repositories...
+              Loading GitHub Statistics...
             </h2>
           </div>
         </div>
@@ -232,15 +211,15 @@ const GitHubRepos = () => {
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
         >
-          <Badge className="mb-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-600 border-blue-500/20">
+          <Badge className="mb-4 bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-indigo-500 border-indigo-500/20">
             <Github className="w-4 h-4 mr-2" />
-            Open Source
+            Real-time Statistics
           </Badge>
-          <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
-            GitHub <span className="gradient-text">Repositories</span>
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+            GitHub <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-sm">Analytics</span>
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto mb-6">
-            Explore my open-source contributions and projects on GitHub. From web applications to competitive programming solutions.
+            Live GitHub statistics including contributions, repository analytics, and development activity tracking.
           </p>
           {error && (
             <div className="text-sm text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 max-w-md mx-auto">
@@ -249,6 +228,119 @@ const GitHubRepos = () => {
           )}
         </motion.div>
 
+        {/* Statistics Dashboard */}
+        {stats && (
+          <motion.div 
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Card className="bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-elevated hover:border-indigo-500/20 transition-all duration-500">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="p-3 bg-indigo-500/10 rounded-xl">
+                    <Package className="w-6 h-6 text-indigo-500" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-1">{formatNumber(stats.totalRepos)}</div>
+                <div className="text-sm font-medium text-muted-foreground">Repositories</div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-elevated hover:border-yellow-500/20 transition-all duration-500">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="p-3 bg-yellow-500/10 rounded-xl">
+                    <Star className="w-6 h-6 text-yellow-500" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-1">{formatNumber(stats.totalStars)}</div>
+                <div className="text-sm font-medium text-muted-foreground">Total Stars</div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-elevated hover:border-emerald-500/20 transition-all duration-500">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="p-3 bg-emerald-500/10 rounded-xl">
+                    <GitFork className="w-6 h-6 text-emerald-500" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-1">{formatNumber(stats.totalForks)}</div>
+                <div className="text-sm font-medium text-muted-foreground">Total Forks</div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-elevated hover:border-purple-500/20 transition-all duration-500">
+              <CardContent className="p-6 text-center">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="p-3 bg-purple-500/10 rounded-xl">
+                    <Users className="w-6 h-6 text-purple-500" />
+                  </div>
+                </div>
+                <div className="text-3xl font-bold text-foreground mb-1">{formatNumber(stats.followers)}</div>
+                <div className="text-sm font-medium text-muted-foreground">Followers</div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Language Distribution */}
+        {stats && Object.keys(stats.languages).length > 0 && (
+          <motion.div 
+            className="mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            viewport={{ once: true }}
+          >
+            <Card className="bg-gradient-to-br from-card to-card/50 border-border/50">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <GitBranch className="w-5 h-5 text-orange-500" />
+                  Language Distribution
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {Object.entries(stats.languages)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, 6)
+                    .map(([language, count]) => (
+                      <div key={language} className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div 
+                            className="w-3 h-3 rounded-full"
+                            style={{ backgroundColor: getLanguageColor(language) }}
+                          />
+                          <span className="text-sm font-medium">{language}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-24 bg-slate-200 dark:bg-slate-700 rounded-full h-2">
+                            <motion.div 
+                              className="h-2 rounded-full"
+                              style={{ 
+                                backgroundColor: getLanguageColor(language),
+                                width: `${(count / Math.max(...Object.values(stats.languages))) * 100}%`
+                              }}
+                              initial={{ width: 0 }}
+                              whileInView={{ width: `${(count / Math.max(...Object.values(stats.languages))) * 100}%` }}
+                              transition={{ duration: 1, delay: 0.5 }}
+                            />
+                          </div>
+                          <span className="text-sm text-muted-foreground w-8 text-right">{count}</span>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+
+        {/* Repository Grid */}
         <motion.div 
           className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
           variants={containerVariants}
@@ -258,11 +350,11 @@ const GitHubRepos = () => {
         >
           {repos.map((repo) => (
             <motion.div key={repo.id} variants={itemVariants}>
-              <Card className="h-full bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-lg hover:border-purple-500/20 transition-all duration-300 group">
-                <CardHeader className="pb-3">
+              <Card className="h-full bg-gradient-to-br from-card to-card/50 border-border/50 hover:shadow-elevated hover:border-indigo-500/30 transition-all duration-500 group flex flex-col">
+                <CardHeader className="pb-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1 min-w-0">
-                      <CardTitle className="text-lg font-semibold truncate group-hover:text-purple-600 transition-colors">
+                      <CardTitle className="text-xl font-bold text-foreground truncate group-hover:text-indigo-500 transition-colors">
                         {repo.name}
                       </CardTitle>
                       <div className="flex items-center gap-2 mt-2">
@@ -276,7 +368,7 @@ const GitHubRepos = () => {
                           </div>
                         )}
                         <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Calendar className="w-3 h-3" />
+                          <Clock className="w-3 h-3" />
                           {formatDate(repo.updated_at)}
                         </div>
                       </div>
@@ -322,6 +414,10 @@ const GitHubRepos = () => {
                       <div className="flex items-center gap-1 text-sm text-muted-foreground">
                         <GitFork className="w-4 h-4 text-blue-500" />
                         <span>{repo.forks_count}</span>
+                      </div>
+                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                        <Eye className="w-4 h-4 text-green-500" />
+                        <span>{repo.watchers_count}</span>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">

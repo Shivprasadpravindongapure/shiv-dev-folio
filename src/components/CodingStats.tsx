@@ -144,7 +144,7 @@ const CodingStats = () => {
   }
 
   return (
-    <section id="coding-stats" className="section-padding bg-gradient-to-br from-slate-900 via-purple-900/20 to-slate-900 relative overflow-hidden">
+    <section id="coding-stats" className="section-padding bg-gradient-to-br from-slate-900 via-indigo-950/20 to-slate-900 relative overflow-hidden">
       {/* Animated background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div 
@@ -187,7 +187,7 @@ const CodingStats = () => {
             <Terminal className="w-4 h-4 mr-2" />
             Coding Statistics
           </Badge>
-          <h2 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
+          <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
             My <span className="gradient-text bg-gradient-to-r from-orange-600 via-red-600 to-purple-600 bg-clip-text text-transparent">Coding</span> Journey
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
@@ -204,7 +204,7 @@ const CodingStats = () => {
         >
           {/* LeetCode Card */}
           <motion.div variants={itemVariants}>
-            <Card className="h-full bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 border-orange-200/50 dark:border-orange-800/50 hover:shadow-lg hover:border-orange-300/50 transition-all duration-300 hover-lift">
+            <Card className="h-full bg-gradient-to-br from-orange-50/50 to-red-50/50 dark:from-orange-950/20 dark:to-red-950/20 border-orange-200/50 dark:border-orange-900/50 hover:shadow-elevated hover:border-orange-300/50 transition-all duration-500 hover-lift">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant="secondary" className="bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-400">
@@ -267,7 +267,7 @@ const CodingStats = () => {
 
           {/* Codeforces Card */}
           <motion.div variants={itemVariants}>
-            <Card className="h-full bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 border-blue-200/50 dark:border-blue-800/50 hover:shadow-lg hover:border-blue-300/50 transition-all duration-300 hover-lift">
+            <Card className="h-full bg-gradient-to-br from-blue-50/50 to-purple-50/50 dark:from-blue-950/20 dark:to-purple-950/20 border-blue-200/50 dark:border-blue-900/50 hover:shadow-elevated hover:border-blue-300/50 transition-all duration-500 hover-lift">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant="secondary" className="bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
@@ -331,7 +331,7 @@ const CodingStats = () => {
 
           {/* Coding Ninjas Card */}
           <motion.div variants={itemVariants}>
-            <Card className="h-full bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border-green-200/50 dark:border-green-800/50 hover:shadow-lg hover:border-green-300/50 transition-all duration-300 hover-lift">
+            <Card className="h-full bg-gradient-to-br from-green-50/50 to-emerald-50/50 dark:from-green-950/20 dark:to-emerald-950/20 border-green-200/50 dark:border-green-900/50 hover:shadow-elevated hover:border-green-300/50 transition-all duration-500 hover-lift">
               <CardHeader className="pb-4">
                 <div className="flex items-center justify-between mb-3">
                   <Badge variant="secondary" className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
