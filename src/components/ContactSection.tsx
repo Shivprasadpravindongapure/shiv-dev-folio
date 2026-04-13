@@ -52,7 +52,7 @@ const ContactSection = () => {
     {
       icon: Linkedin,
       label: 'LinkedIn',
-      href: 'https://www.linkedin.com/in/shivprasad-dongapure-35760a290/',
+      href: 'https://www.linkedin.com/in/shivprasad-dongapure',
       color: 'hover:from-blue-600 hover:to-blue-800',
       description: 'Let\'s connect professionally'
     },
@@ -61,7 +61,7 @@ const ContactSection = () => {
       label: 'LeetCode',
       href: 'https://leetcode.com/u/ShivprasadPravinDongapure/',
       color: 'hover:from-orange-500 hover:to-red-500',
-      description: '120+ problems solved'
+      description: '200+ problems solved'
     },
     {
       icon: Trophy,

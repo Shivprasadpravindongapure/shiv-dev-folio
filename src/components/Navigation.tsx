@@ -9,7 +9,7 @@ const navLinks = [
   { href: '#projects', label: 'Projects', icon: Rocket },
   { href: '#developer-profiles', label: 'Analytics', icon: Zap },
   { href: '#resume', label: 'Resume', icon: Star },
-  { href: '#technical-achievements', label: 'Achievements', icon: Globe },
+  { href: '#achievements', label: 'Achievements', icon: Globe },
   { href: '#contact', label: 'Contact', icon: Heart },
 ];
 
