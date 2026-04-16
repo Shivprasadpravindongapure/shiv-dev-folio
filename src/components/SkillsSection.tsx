@@ -1,168 +1,314 @@
-import { Code, Globe, Database, Cloud, BookOpen, Layers, Cpu, Zap } from 'lucide-react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 const skillCategories = [
   {
-    icon: Code,
     title: 'Languages',
-    color: 'from-indigo-500 to-blue-500',
-    iconColor: 'text-indigo-400',
-    iconBg: 'bg-indigo-500/10',
-    skills: ['Python', 'JavaScript', 'C++', 'Java', 'SQL'],
+    emoji: '💻',
+    color: '#818cf8',
+    glowColor: 'rgba(129,140,248,0.15)',
+    borderColor: 'rgba(129,140,248,0.2)',
+    skills: [
+      { name: 'Python', level: 90 },
+      { name: 'JavaScript', level: 88 },
+      { name: 'C++', level: 82 },
+      { name: 'Java', level: 75 },
+      { name: 'SQL', level: 80 },
+    ],
   },
   {
-    icon: Globe,
     title: 'Frontend',
-    color: 'from-pink-500 to-rose-500',
-    iconColor: 'text-pink-400',
-    iconBg: 'bg-pink-500/10',
-    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'HTML/CSS', 'Framer Motion'],
+    emoji: '🎨',
+    color: '#f472b6',
+    glowColor: 'rgba(244,114,182,0.15)',
+    borderColor: 'rgba(244,114,182,0.2)',
+    skills: [
+      { name: 'React.js', level: 92 },
+      { name: 'Next.js', level: 80 },
+      { name: 'Tailwind CSS', level: 90 },
+      { name: 'Framer Motion', level: 78 },
+      { name: 'TypeScript', level: 82 },
+    ],
   },
   {
-    icon: Database,
     title: 'Backend',
-    color: 'from-violet-500 to-purple-500',
-    iconColor: 'text-violet-400',
-    iconBg: 'bg-violet-500/10',
-    skills: ['Node.js', 'Express.js', 'Django', 'REST APIs', 'JWT Auth', 'WebSockets'],
+    emoji: '⚙️',
+    color: '#a78bfa',
+    glowColor: 'rgba(167,139,250,0.15)',
+    borderColor: 'rgba(167,139,250,0.2)',
+    skills: [
+      { name: 'Node.js', level: 88 },
+      { name: 'Express.js', level: 88 },
+      { name: 'Django', level: 80 },
+      { name: 'REST APIs', level: 92 },
+      { name: 'WebSockets', level: 85 },
+    ],
   },
   {
-    icon: Cloud,
     title: 'Databases',
-    color: 'from-cyan-500 to-teal-500',
-    iconColor: 'text-cyan-400',
-    iconBg: 'bg-cyan-500/10',
-    skills: ['MongoDB', 'MySQL', 'PostgreSQL'],
+    emoji: '🗄️',
+    color: '#22d3ee',
+    glowColor: 'rgba(34,211,238,0.15)',
+    borderColor: 'rgba(34,211,238,0.2)',
+    skills: [
+      { name: 'MongoDB', level: 88 },
+      { name: 'PostgreSQL', level: 78 },
+      { name: 'MySQL', level: 80 },
+      { name: 'Redis', level: 65 },
+    ],
   },
   {
-    icon: BookOpen,
     title: 'Cloud & DevOps',
-    color: 'from-sky-500 to-blue-500',
-    iconColor: 'text-sky-400',
-    iconBg: 'bg-sky-500/10',
-    skills: ['AWS (EC2, S3, Lambda)', 'Docker', 'Kubernetes', 'CI/CD', 'Git'],
+    emoji: '☁️',
+    color: '#38bdf8',
+    glowColor: 'rgba(56,189,248,0.15)',
+    borderColor: 'rgba(56,189,248,0.2)',
+    skills: [
+      { name: 'AWS (EC2, S3, Lambda)', level: 75 },
+      { name: 'Docker', level: 72 },
+      { name: 'Git / GitHub', level: 92 },
+      { name: 'CI/CD', level: 68 },
+    ],
   },
   {
-    icon: Layers,
-    title: 'AI/ML',
-    color: 'from-amber-500 to-orange-500',
-    iconColor: 'text-amber-400',
-    iconBg: 'bg-amber-500/10',
-    skills: ['YOLOv8', 'LLM/RAG', 'LangChain', 'OpenCV', 'Prompt Engineering'],
+    title: 'AI / ML',
+    emoji: '🤖',
+    color: '#fb923c',
+    glowColor: 'rgba(251,146,60,0.15)',
+    borderColor: 'rgba(251,146,60,0.2)',
+    skills: [
+      { name: 'YOLOv8', level: 85 },
+      { name: 'LangChain / RAG', level: 78 },
+      { name: 'OpenCV', level: 80 },
+      { name: 'Prompt Engineering', level: 82 },
+    ],
   },
   {
-    icon: Cpu,
     title: 'Real-Time',
-    color: 'from-emerald-500 to-green-500',
-    iconColor: 'text-emerald-400',
-    iconBg: 'bg-emerald-500/10',
-    skills: ['Socket.io', 'WebRTC', 'MQTT', 'Stream API', 'WebSocket'],
+    emoji: '⚡',
+    color: '#34d399',
+    glowColor: 'rgba(52,211,153,0.15)',
+    borderColor: 'rgba(52,211,153,0.2)',
+    skills: [
+      { name: 'Socket.io', level: 90 },
+      { name: 'WebRTC', level: 75 },
+      { name: 'MQTT', level: 70 },
+      { name: 'Stream API', level: 78 },
+    ],
   },
   {
-    icon: Zap,
     title: 'Core CS',
-    color: 'from-orange-500 to-red-500',
-    iconColor: 'text-orange-400',
-    iconBg: 'bg-orange-500/10',
-    skills: ['Data Structures', 'Algorithms', 'System Design', 'OOP', 'SDLC', 'Agile'],
+    emoji: '🧠',
+    color: '#f87171',
+    glowColor: 'rgba(248,113,113,0.15)',
+    borderColor: 'rgba(248,113,113,0.2)',
+    skills: [
+      { name: 'Data Structures', level: 90 },
+      { name: 'Algorithms', level: 88 },
+      { name: 'System Design', level: 80 },
+      { name: 'OOP', level: 88 },
+    ],
   },
 ];
 
-const SkillsSection = () => {
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.07 } },
-  };
+const techTags = ['Python', 'React', 'Node.js', 'MongoDB', 'AWS', 'Docker', 'YOLOv8', 'Socket.io', 'PostgreSQL', 'TypeScript', 'LangChain', 'Django', 'Redis', 'WebRTC', 'OpenCV'];
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
-  };
+export default function SkillsSection() {
+  const [activeCategory, setActiveCategory] = useState(0);
+
+  const active = skillCategories[activeCategory];
 
   return (
-    <section id="skills" className="py-24 bg-gradient-to-b from-background to-card/30 relative overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#6366f108_1px,transparent_1px),linear-gradient(to_bottom,#6366f108_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+    <section id="skills" className="relative py-28 overflow-hidden" style={{ background: 'hsl(220, 30%, 4%)' }}>
+      {/* Background */}
+      <div className="absolute inset-0 bg-grid opacity-80 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(168,85,247,0.05)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="container-narrow mx-auto px-6 lg:px-12 relative z-10">
         {/* Header */}
-        <div className="text-center mb-14">
-          <motion.span
-            className="inline-block text-xs font-bold text-indigo-500 uppercase tracking-[0.2em] mb-4"
-            initial={{ opacity: 0, y: 10 }}
+        <div className="text-center mb-16">
+          <motion.div
+            className="flex justify-center mb-5"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            🛠️ Technical Skills
-          </motion.span>
+            <div className="section-badge">
+              <span className="text-indigo-400">✦</span>
+              Technical Arsenal
+            </div>
+          </motion.div>
           <motion.h2
-            className="font-heading text-4xl sm:text-5xl md:text-6xl font-black text-foreground mb-5 tracking-tight"
-            initial={{ opacity: 0, y: 15 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-5"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
             Skills &{' '}
-            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               Expertise
             </span>
           </motion.h2>
           <motion.p
-            className="text-muted-foreground max-w-2xl mx-auto text-lg"
-            initial={{ opacity: 0, y: 10 }}
+            className="text-white/40 max-w-xl mx-auto text-base"
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            A production-ready toolkit built across full-stack development, AI systems, cloud infrastructure, and real-time applications.
+            A production-ready toolkit built across full-stack, AI systems, cloud, and real-time applications.
           </motion.p>
         </div>
 
-        {/* Skills Grid */}
-        <motion.div
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {skillCategories.map((category) => (
-            <motion.div
-              key={category.title}
-              variants={cardVariants}
-              className="group p-5 rounded-2xl bg-card/70 backdrop-blur-sm border border-border/50 hover:border-transparent hover:shadow-[0_8px_30px_rgba(0,0,0,0.2)] transition-all duration-500 relative overflow-hidden"
-              whileHover={{ y: -6, scale: 1.01 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 22 }}
-            >
-              {/* Gradient top bar */}
-              <div className={`absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r ${category.color} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              {/* Subtle inner glow */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${category.color} opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500 rounded-2xl`} />
+        {/* Bento Layout */}
+        <div className="grid lg:grid-cols-[280px_1fr] gap-6 mb-10">
+          {/* Left: Category list */}
+          <motion.div
+            className="space-y-2"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            {skillCategories.map((cat, i) => (
+              <motion.button
+                key={cat.title}
+                onClick={() => setActiveCategory(i)}
+                className="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl text-left transition-all duration-300 group"
+                style={{
+                  background: activeCategory === i ? `rgba(${cat.color === '#818cf8' ? '129,140,248' : '255,255,255'},0.07)` : 'rgba(255,255,255,0.02)',
+                  border: activeCategory === i ? `1px solid ${cat.borderColor}` : '1px solid rgba(255,255,255,0.05)',
+                  boxShadow: activeCategory === i ? `0 0 20px ${cat.glowColor}` : 'none',
+                }}
+                whileHover={{ scale: 1.01, x: 2 }}
+              >
+                <span className="text-xl">{cat.emoji}</span>
+                <span
+                  className="font-semibold text-sm"
+                  style={{
+                    color: activeCategory === i ? cat.color : 'rgba(255,255,255,0.5)',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                  }}
+                >
+                  {cat.title}
+                </span>
+                {activeCategory === i && (
+                  <motion.div
+                    className="ml-auto w-1.5 h-1.5 rounded-full"
+                    style={{ background: cat.color, boxShadow: `0 0 8px ${cat.color}` }}
+                    layoutId="active-skill-dot"
+                  />
+                )}
+              </motion.button>
+            ))}
+          </motion.div>
 
-              <div className="relative z-10">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-9 h-9 rounded-xl ${category.iconBg} flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
-                    <category.icon className={`w-5 h-5 ${category.iconColor}`} />
-                  </div>
-                  <h3 className="text-sm font-bold text-foreground font-heading">{category.title}</h3>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2.5 py-1 text-xs font-medium text-muted-foreground bg-secondary/50 rounded-lg border border-border/60 hover:border-indigo-500/40 hover:text-foreground hover:bg-secondary/80 transition-all duration-200 cursor-default"
-                    >
-                      {skill}
+          {/* Right: Skill bars */}
+          <motion.div
+            key={activeCategory}
+            className="p-8 rounded-3xl"
+            style={{
+              background: `linear-gradient(135deg, ${active.glowColor}, rgba(255,255,255,0.02))`,
+              border: `1px solid ${active.borderColor}`,
+              boxShadow: `0 0 40px ${active.glowColor}`,
+            }}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <div className="flex items-center gap-3 mb-8">
+              <span className="text-3xl">{active.emoji}</span>
+              <h3
+                className="text-2xl font-black"
+                style={{
+                  fontFamily: "'Syne', sans-serif",
+                  color: active.color,
+                }}
+              >
+                {active.title}
+              </h3>
+            </div>
+            <div className="space-y-6">
+              {active.skills.map((skill, i) => (
+                <motion.div
+                  key={skill.name}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.08, duration: 0.4 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-white/80" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {skill.name}
                     </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                    <span
+                      className="text-xs font-bold"
+                      style={{ color: active.color, fontFamily: "'JetBrains Mono', monospace" }}
+                    >
+                      {skill.level}%
+                    </span>
+                  </div>
+                  <div className="skill-bar">
+                    <motion.div
+                      className="skill-bar-fill"
+                      style={{ background: `linear-gradient(90deg, ${active.color}, ${active.color}99)` }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${skill.level}%` }}
+                      transition={{ delay: i * 0.1, duration: 1.2, ease: [0.4, 0, 0.2, 1] }}
+                    >
+                      <div
+                        className="absolute top-0 right-0 w-2 h-full rounded-full"
+                        style={{ background: active.color, boxShadow: `0 0 8px ${active.color}` }}
+                      />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Tech tag cloud */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+        >
+          <p className="text-xs text-white/25 uppercase tracking-widest mb-5 font-mono" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+            Also proficient in
+          </p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {techTags.map((tag, i) => (
+              <motion.span
+                key={tag}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium text-white/40 cursor-default transition-all duration-300 hover:text-white/80"
+                style={{
+                  background: 'rgba(255,255,255,0.03)',
+                  border: '1px solid rgba(255,255,255,0.06)',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
+                whileHover={{ scale: 1.08, background: 'rgba(99,102,241,0.1)', borderColor: 'rgba(99,102,241,0.25)', color: '#818cf8' }}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.03 }}
+              >
+                {tag}
+              </motion.span>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default SkillsSection;
+}

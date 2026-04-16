@@ -6,47 +6,39 @@ interface LoadingScreenProps {
   onComplete: () => void;
 }
 
-const LoadingScreen = ({ isLoading, onComplete }: LoadingScreenProps) => {
+const codeLines = [
+  '> initializing portfolio...',
+  '> loading components...',
+  '> connecting modules...',
+  '> optimizing experience...',
+  '> READY ✓',
+];
+
+export default function LoadingScreen({ isLoading, onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState('INITIALIZING EXECUTABLE');
+  const [lineIndex, setLineIndex] = useState(0);
 
   useEffect(() => {
     if (!isLoading) return;
-    
-    const duration = 2500;
-    const intervalTime = 20;
+
+    const duration = 2800;
+    const intervalTime = 18;
     const steps = duration / intervalTime;
     let currentStep = 0;
 
-    // Loading Text Sequence
-    const texts = [
-      'SYSTEM BOOT...',
-      'LOADING ASSETS...',
-      'ESTABLISHING CONNECTION...',
-      'OPTIMIZING EXPERIENCE...',
-      'READY.'
-    ];
-
     const timer = setInterval(() => {
       currentStep++;
-      
-      // Dynamic easing for a more "powerful" feel (starts slow, bursts, then eases)
       const t = currentStep / steps;
-      const easedProgress = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-      
-      const currentProgress = Math.min(easedProgress * 100, 100);
+      const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      const currentProgress = Math.min(eased * 100, 100);
       setProgress(currentProgress);
-      
-      // Update text based on progress
-      const textIndex = Math.min(
-        Math.floor((currentProgress / 100) * texts.length),
-        texts.length - 1
-      );
-      setLoadingText(texts[textIndex]);
+
+      const newLineIndex = Math.min(Math.floor((currentProgress / 100) * codeLines.length), codeLines.length - 1);
+      setLineIndex(newLineIndex);
 
       if (currentStep >= steps) {
         clearInterval(timer);
-        setTimeout(onComplete, 500); // Let the "READY" state linger for 0.5s
+        setTimeout(onComplete, 600);
       }
     }, intervalTime);
 
@@ -57,123 +49,144 @@ const LoadingScreen = ({ isLoading, onComplete }: LoadingScreenProps) => {
     <AnimatePresence>
       {isLoading && (
         <motion.div
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background pointer-events-auto overflow-hidden"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center overflow-hidden"
+          style={{ background: 'hsl(220, 30%, 4%)' }}
           initial={{ opacity: 1 }}
-          exit={{ 
+          exit={{
             opacity: 0,
-            scale: 1.1,
-            filter: "blur(10px)",
-            transition: { duration: 0.8, ease: [0.76, 0, 0.24, 1] } 
+            scale: 1.05,
+            filter: 'blur(8px)',
+            transition: { duration: 0.7, ease: [0.76, 0, 0.24, 1] },
           }}
         >
-          {/* Animated Background Gradients */}
-          <motion.div 
-            className="absolute inset-0 opacity-20"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.2 }}
-            transition={{ duration: 1 }}
-          >
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40rem] h-[40rem] bg-indigo-500/30 rounded-full blur-[100px] animate-pulse" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] bg-purple-500/20 rounded-full blur-[80px]" style={{ mixBlendMode: 'screen' }} />
-          </motion.div>
+          {/* Grid background */}
+          <div className="absolute inset-0 bg-grid opacity-100 pointer-events-none" />
 
-          {/* Central Loader Construction */}
-          <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center z-10">
-            {/* Outer Rotating Ring */}
-            <motion.div 
-              className="absolute inset-0 border-2 border-indigo-500/20 rounded-full border-t-indigo-500/80 border-b-purple-500/80"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            />
-            {/* Inner Counter-Rotating Ring */}
-            <motion.div 
-              className="absolute inset-4 border border-dashed border-white/20 rounded-full"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            />
-            {/* Core Glow */}
-            <motion.div 
-              className="absolute inset-12 bg-gradient-to-tr from-indigo-500/10 to-purple-500/10 rounded-full backdrop-blur-md border border-white/5"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
-            >
-              <div className="absolute inset-0 flex items-center justify-center">
-                {/* Logo/Initials Reveal */}
-                <div className="relative overflow-hidden">
-                  <motion.div
-                    className="text-5xl md:text-6xl font-heading font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-indigo-200 to-purple-400"
-                    initial={{ y: 100 }}
-                    animate={{ y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2, ease: [0.76, 0, 0.24, 1] }}
-                  >
-                    SPD
-                  </motion.div>
-                </div>
-              </div>
-            </motion.div>
+          {/* Glow orbs */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 70%)',
+              filter: 'blur(40px)',
+            }}
+          />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] rounded-full pointer-events-none"
+            style={{
+              background: 'radial-gradient(circle, rgba(168,85,247,0.1) 0%, transparent 70%)',
+              filter: 'blur(20px)',
+            }}
+          />
 
-            {/* Circular Progress Indicator */}
-            <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
-              <circle
-                cx="50%"
-                cy="50%"
-                r="48%"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-indigo-500/20"
+          <div className="relative z-10 flex flex-col items-center">
+            {/* Logo ring */}
+            <div className="relative w-36 h-36 flex items-center justify-center mb-10">
+              {/* Outer rotating ring */}
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                style={{ border: '1px solid rgba(99,102,241,0.2)', borderTopColor: '#6366f1' }}
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'linear' }}
               />
-              <motion.circle
-                cx="50%"
-                cy="50%"
-                r="48%"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                className="text-indigo-500 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]"
-                strokeDasharray="300"
-                strokeDashoffset={300 - (progress / 100) * 300}
+              {/* Middle ring */}
+              <motion.div
+                className="absolute inset-3 rounded-full"
+                style={{ border: '1px dashed rgba(168,85,247,0.15)', borderBottomColor: '#a855f7' }}
+                animate={{ rotate: -360 }}
+                transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
               />
-            </svg>
-          </div>
 
-          {/* Typography & Status Container */}
-          <div className="mt-12 flex flex-col items-center gap-4 z-10 w-64 md:w-80">
-            {/* Percentage Display */}
-            <div className="overflow-hidden h-12">
-              <motion.div 
-                className="text-4xl font-heading font-light tracking-widest text-white/90"
-                key={Math.round(progress)}
-                initial={{ y: 20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
+              {/* SVG Progress circle */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
+                <circle cx="50%" cy="50%" r="44%" fill="none" stroke="rgba(99,102,241,0.1)" strokeWidth="2" />
+                <motion.circle
+                  cx="50%"
+                  cy="50%"
+                  r="44%"
+                  fill="none"
+                  stroke="url(#progressGrad)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeDasharray="276"
+                  strokeDashoffset={276 - (progress / 100) * 276}
+                  style={{ filter: 'drop-shadow(0 0 6px rgba(99,102,241,0.8))' }}
+                />
+                <defs>
+                  <linearGradient id="progressGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#6366f1" />
+                    <stop offset="100%" stopColor="#a855f7" />
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              {/* Center initials */}
+              <motion.div
+                className="relative z-10 text-center"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
               >
-                {Math.round(progress)}<span className="text-indigo-500/70 text-2xl">%</span>
+                <div
+                  className="text-3xl font-black tracking-tighter"
+                  style={{
+                    fontFamily: "'Syne', sans-serif",
+                    background: 'linear-gradient(135deg, #818cf8, #a78bfa)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    textShadow: 'none',
+                  }}
+                >
+                  SPD
+                </div>
+                <div
+                  className="text-[10px] text-white/30 tracking-widest uppercase mt-0.5"
+                  style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                >
+                  Portfolio
+                </div>
               </motion.div>
             </div>
 
-            {/* Dynamic Status Text */}
-            <div className="h-4 overflow-hidden mt-2">
-              <AnimatePresence mode="popLayout">
+            {/* Progress percentage */}
+            <div className="mb-4 overflow-hidden h-10">
+              <AnimatePresence mode="wait">
                 <motion.div
-                  key={loadingText}
-                  initial={{ y: 20, opacity: 0 }}
+                  key={Math.round(progress)}
+                  className="text-3xl font-black text-white/80"
+                  style={{ fontFamily: "'Syne', sans-serif" }}
+                  initial={{ y: 15, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -20, opacity: 0 }}
-                  transition={{ duration: 0.3, ease: "easeInOut" }}
-                  className="text-xs font-mono font-medium tracking-[0.3em] text-indigo-300/80 uppercase"
+                  exit={{ y: -15, opacity: 0 }}
+                  transition={{ duration: 0.15 }}
                 >
-                  {loadingText}
+                  {Math.round(progress)}<span className="text-xl text-indigo-500/60">%</span>
                 </motion.div>
               </AnimatePresence>
+            </div>
+
+            {/* Code lines */}
+            <div className="w-64 space-y-1">
+              {codeLines.slice(0, lineIndex + 1).map((line, i) => (
+                <motion.div
+                  key={i}
+                  className="text-xs text-left"
+                  style={{
+                    fontFamily: "'JetBrains Mono', monospace",
+                    color: i === lineIndex ? '#818cf8' : 'rgba(255,255,255,0.2)',
+                  }}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {line}
+                  {i === lineIndex && <span className="inline-block w-1.5 h-3.5 bg-indigo-400 ml-1 cursor-blink" style={{ verticalAlign: 'middle' }} />}
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
-};
-
-export default LoadingScreen;
+}

@@ -1,241 +1,201 @@
-import { ExternalLink, Github, Star, GitFork, Code2, Cpu, MessageSquare, Scale, Newspaper, Zap } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { ExternalLink, Github, Star } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const projects = [
   {
     id: 1,
-    icon: Cpu,
     emoji: '🤖',
     title: 'AI Traffic Management System',
     subtitle: 'Machine Learning · Real-Time Systems',
-    description: 'Production-grade intelligent traffic control system using YOLOv8 for multi-lane vehicle detection. Designed adaptive signal scheduling algorithms (FCFS, Round-Robin, Emergency Priority) with live monitoring dashboard.',
-    tech: ['Python', 'YOLOv8', 'FastAPI', 'React', 'Node.js', 'Socket.io', 'OpenCV'],
-    highlights: [
-      'Real-time multi-lane vehicle detection via YOLOv8',
-      'Adaptive scheduling: FCFS, Round-Robin, Sliding Window',
-      'Emergency vehicle priority override system',
-      'React + Socket.io live monitoring dashboard',
-    ],
+    description: 'Production-grade intelligent traffic control system using YOLOv8 for multi-lane vehicle detection with adaptive signal scheduling algorithms.',
+    tech: ['Python', 'YOLOv8', 'FastAPI', 'React', 'Socket.io', 'OpenCV'],
+    highlights: ['Real-time multi-lane vehicle detection via YOLOv8', 'Adaptive scheduling: FCFS, Round-Robin, Priority', 'Emergency vehicle priority override system'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/AI-Based-Intelligent-Traffic-Managment-System',
     liveLink: null,
-    stars: 0,
-    forks: 0,
-    language: 'JavaScript',
     category: 'AI/ML',
     featured: true,
-    gradient: 'from-violet-600/25 via-purple-600/15 to-transparent',
-    borderGlow: 'hover:border-violet-500/50',
-    iconBg: 'from-violet-500 to-purple-600',
-    badge: '🔥 Latest',
+    accentColor: '#a78bfa',
+    glowColor: 'rgba(167,139,250,0.15)',
+    borderColor: 'rgba(167,139,250,0.2)',
+    badgeText: '🔥 Latest',
   },
   {
     id: 2,
-    icon: MessageSquare,
     emoji: '💬',
     title: 'LinkLoom',
     subtitle: 'Full-Stack · WebRTC · Real-Time',
-    description: 'Full-stack real-time messaging and video calling platform. Built WebSocket-driven messaging, Stream API-powered video calls, JWT auth, and reactive state with React Query and Zustand.',
-    tech: ['React', 'Node.js', 'MongoDB', 'Stream API', 'WebRTC', 'JWT', 'Zustand'],
-    highlights: [
-      'HD video calling via Stream Video API + WebRTC',
-      'Real-time messaging with WebSocket channels',
-      'JWT-based secure authentication flow',
-      'React Query + Zustand for efficient state management',
-    ],
+    description: 'Full-stack real-time messaging and video calling platform with Stream API-powered video calls, JWT auth, and reactive state management.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Stream API', 'WebRTC', 'Zustand'],
+    highlights: ['HD video calling via Stream Video API + WebRTC', 'Real-time messaging with WebSocket channels', 'JWT-based authentication flow'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/LinkLoom',
     liveLink: 'https://link-loom-puce.vercel.app',
-    stars: 0,
-    forks: 0,
-    language: 'JavaScript',
     category: 'Full-Stack',
     featured: true,
-    gradient: 'from-blue-600/25 via-indigo-600/15 to-transparent',
-    borderGlow: 'hover:border-blue-500/50',
-    iconBg: 'from-blue-500 to-indigo-600',
-    badge: '🚀 Live',
+    accentColor: '#60a5fa',
+    glowColor: 'rgba(96,165,250,0.15)',
+    borderColor: 'rgba(96,165,250,0.2)',
+    badgeText: '🚀 Live',
   },
   {
     id: 3,
-    icon: MessageSquare,
     emoji: '⚡',
     title: 'Chatify',
     subtitle: 'MERN Stack · WebSocket · Encryption',
-    description: 'Scalable real-time chat platform with end-to-end encryption, optimized WebSocket communication, and sub-100ms message latency. Features online presence tracking and message persistence.',
-    tech: ['React', 'Node.js', 'Socket.io', 'MongoDB', 'Express', 'JWT'],
-    highlights: [
-      'Sub-100ms real-time message delivery',
-      'End-to-end encrypted messaging',
-      'Online/offline presence tracking',
-      'JWT-based auth with session management',
-    ],
+    description: 'Scalable real-time chat platform with end-to-end encryption, optimized WebSocket communication, and sub-100ms message latency.',
+    tech: ['React', 'Node.js', 'Socket.io', 'MongoDB', 'JWT'],
+    highlights: ['Sub-100ms real-time message delivery', 'End-to-end encrypted messaging', 'Online/offline presence tracking'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/chat-app',
     liveLink: 'https://chat-app-eight-amber.vercel.app',
-    stars: 0,
-    forks: 0,
-    language: 'JavaScript',
     category: 'Full-Stack',
     featured: false,
-    gradient: 'from-emerald-600/25 via-teal-600/15 to-transparent',
-    borderGlow: 'hover:border-emerald-500/50',
-    iconBg: 'from-emerald-500 to-teal-600',
-    badge: '🚀 Live',
+    accentColor: '#34d399',
+    glowColor: 'rgba(52,211,153,0.15)',
+    borderColor: 'rgba(52,211,153,0.2)',
+    badgeText: '🚀 Live',
   },
   {
     id: 4,
-    icon: Scale,
     emoji: '⚖️',
     title: 'Nyay AI – Legal Assistant',
     subtitle: 'AI/ML · LLM · RAG Architecture',
-    description: 'AI-powered legal assistant using Flask and LLaMA LLM with RAG (Retrieval-Augmented Generation) architecture. Vector-based retrieval system for context-aware, accurate legal guidance.',
-    tech: ['Python', 'Flask', 'LLaMA', 'RAG', 'Vector DB', 'NLP', 'LangChain'],
-    highlights: [
-      'LLaMA-powered LLM with RAG architecture',
-      'Vector-based retrieval for context accuracy',
-      'Legal domain fine-tuning and prompt engineering',
-      'Apache 2.0 Open Source License',
-    ],
+    description: 'AI-powered legal assistant using Flask and LLaMA LLM with RAG (Retrieval-Augmented Generation) for accurate context-aware legal guidance.',
+    tech: ['Python', 'Flask', 'LLaMA', 'RAG', 'Vector DB', 'LangChain'],
+    highlights: ['LLaMA-powered LLM with RAG architecture', 'Vector-based retrieval for context accuracy', 'Legal domain fine-tuning and prompt engineering'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/Nyay-AI-for-legal-assistant',
     liveLink: null,
-    stars: 1,
-    forks: 0,
-    language: 'Python',
     category: 'AI/ML',
     featured: true,
-    gradient: 'from-amber-600/25 via-orange-600/15 to-transparent',
-    borderGlow: 'hover:border-amber-500/50',
-    iconBg: 'from-amber-500 to-orange-600',
-    badge: '⭐ Starred',
+    accentColor: '#fbbf24',
+    glowColor: 'rgba(251,191,36,0.15)',
+    borderColor: 'rgba(251,191,36,0.2)',
+    badgeText: '⭐ Starred',
   },
   {
     id: 5,
-    icon: Newspaper,
     emoji: '📰',
     title: 'NewsFeed Django',
     subtitle: 'Django · REST API · Bootstrap',
-    description: 'Dynamic news aggregation app fetching real-time articles from NewsAPI.org. Category-based browsing (Cricket, Politics, Tech, Sports) with a clean, responsive Bootstrap/Tailwind UI.',
-    tech: ['Python', 'Django', 'NewsAPI', 'Bootstrap', 'Tailwind CSS', 'REST API'],
-    highlights: [
-      'Live news from 70+ sources via NewsAPI',
-      'Multi-category browsing with filters',
-      'Django ORM with cached API responses',
-      'Fully responsive Bootstrap/Tailwind UI',
-    ],
+    description: 'Dynamic news aggregation app fetching real-time articles from NewsAPI.org with category-based browsing and responsive UI.',
+    tech: ['Python', 'Django', 'NewsAPI', 'Bootstrap', 'Tailwind CSS'],
+    highlights: ['Live news from 70+ sources via NewsAPI', 'Multi-category browsing with filters', 'Django ORM with cached API responses'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/NewsFeed-Django',
     liveLink: null,
-    stars: 1,
-    forks: 0,
-    language: 'HTML',
     category: 'Full-Stack',
     featured: false,
-    gradient: 'from-rose-600/25 via-pink-600/15 to-transparent',
-    borderGlow: 'hover:border-rose-500/50',
-    iconBg: 'from-rose-500 to-pink-600',
-    badge: '⭐ Starred',
+    accentColor: '#f472b6',
+    glowColor: 'rgba(244,114,182,0.15)',
+    borderColor: 'rgba(244,114,182,0.2)',
+    badgeText: '⭐ Starred',
   },
   {
     id: 6,
-    icon: Code2,
+    emoji: '📢',
+    title: 'Smart Civic Reporting',
+    subtitle: 'MERN Stack · Geolocation · Civic Tech',
+    description: 'Full-stack civic issue reporting platform enabling citizens to report local problems (potholes, water leaks, power cuts) with photo uploads, geolocation tagging, and real-time status tracking.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Express', 'Geolocation API', 'Cloudinary'],
+    highlights: [
+      'Geo-tagged issue reporting with interactive map view',
+      'Photo upload with Cloudinary CDN for evidence',
+      'Real-time status updates (Pending → In Progress → Resolved)',
+    ],
+    githubLink: 'https://github.com/Shivprasadpravindongapure/smart-civic-reporting',
+    liveLink: null,
+    category: 'Full-Stack',
+    featured: true,
+    accentColor: '#818cf8',
+    glowColor: 'rgba(129,140,248,0.15)',
+    borderColor: 'rgba(129,140,248,0.2)',
+    badgeText: '🆕 New',
+  },
+  {
+    id: 7,
     emoji: '🔬',
     title: 'FOSSEE Workshop Booking',
     subtitle: 'React · TypeScript · Responsive UI',
-    description: 'Full-featured workshop booking portal with multi-step registration, seat availability management, and admin dashboard. Built mobile-first with TypeScript and optimized for accessibility.',
-    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Django', 'REST API', 'SEO'],
-    highlights: [
-      'Multi-step workshop registration flow',
-      'Real-time seat availability tracking',
-      'Admin dashboard for workshop management',
-      'Mobile-first, WCAG-accessible design',
-    ],
+    description: 'Full-featured workshop booking portal with multi-step registration, real-time seat availability, and admin dashboard. Mobile-first, WCAG-accessible.',
+    tech: ['React', 'TypeScript', 'Tailwind CSS', 'Django', 'REST API'],
+    highlights: ['Multi-step workshop registration flow', 'Real-time seat availability tracking', 'Admin dashboard for workshop management'],
     githubLink: 'https://github.com/Shivprasadpravindongapure/workshop',
     liveLink: null,
-    stars: 0,
-    forks: 0,
-    language: 'Python',
     category: 'Full-Stack',
     featured: false,
-    gradient: 'from-cyan-600/25 via-sky-600/15 to-transparent',
-    borderGlow: 'hover:border-cyan-500/50',
-    iconBg: 'from-cyan-500 to-sky-600',
-    badge: null,
+    accentColor: '#22d3ee',
+    glowColor: 'rgba(34,211,238,0.15)',
+    borderColor: 'rgba(34,211,238,0.2)',
+    badgeText: null,
   },
 ];
 
 const categories = ['All', 'AI/ML', 'Full-Stack'];
 
-const ProjectsSection = () => {
+export default function ProjectsSection() {
   const [activeCategory, setActiveCategory] = useState('All');
 
-  const filtered = activeCategory === 'All'
-    ? projects
-    : projects.filter(p => p.category === activeCategory);
-
-  const containerVariants = {
-    hidden: {},
-    visible: { transition: { staggerChildren: 0.08 } },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] } },
-  };
+  const filtered = activeCategory === 'All' ? projects : projects.filter(p => p.category === activeCategory);
 
   return (
-    <section id="projects" className="py-24 bg-gradient-to-b from-background via-card/20 to-background relative overflow-hidden">
-      {/* Background grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#6366f108_1px,transparent_1px),linear-gradient(to_bottom,#6366f108_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+    <section id="projects" className="relative py-28 overflow-hidden" style={{ background: 'hsl(220, 30%, 5%)' }}>
+      {/* Background */}
+      <div className="absolute inset-0 bg-dots opacity-50 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(99,102,241,0.06)_0%,transparent_60%)] pointer-events-none" />
 
       <div className="container-narrow mx-auto px-6 lg:px-12 relative z-10">
         {/* Header */}
         <div className="text-center mb-14">
-          <motion.span
-            className="inline-block text-xs font-bold text-indigo-500 uppercase tracking-[0.2em] mb-4"
-            initial={{ opacity: 0, y: 10 }}
+          <motion.div
+            className="flex justify-center mb-5"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            ⚡ Featured Work
-          </motion.span>
+            <div className="section-badge">
+              <span className="text-indigo-400">✦</span>
+              Featured Work
+            </div>
+          </motion.div>
           <motion.h2
-            className="font-heading text-4xl sm:text-5xl md:text-6xl font-black text-foreground mb-5 tracking-tight"
-            initial={{ opacity: 0, y: 15 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-5"
+            style={{ fontFamily: "'Syne', sans-serif" }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
           >
             Selected{' '}
-            <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span
+              style={{
+                background: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c084fc 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
               Projects
             </span>
           </motion.h2>
-          <motion.p
-            className="text-muted-foreground max-w-2xl mx-auto text-lg"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            Real-world systems built with production-grade engineering — from AI traffic control to real-time communication platforms.
-          </motion.p>
 
           {/* Filter tabs */}
           <motion.div
-            className="flex items-center justify-center gap-3 mt-8"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="flex items-center justify-center gap-2 mt-8"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: 0.25 }}
           >
-            {categories.map(cat => (
+            {categories.map((cat) => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300 ${
-                  activeCategory === cat
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-[0_4px_15px_rgba(99,102,241,0.4)]'
-                    : 'bg-card/60 text-muted-foreground border border-border/50 hover:border-indigo-500/30 hover:text-foreground'
-                }`}
+                className="px-5 py-2 rounded-full text-sm font-semibold transition-all duration-300"
+                style={{
+                  background: activeCategory === cat ? 'linear-gradient(135deg, #6366f1, #a855f7)' : 'rgba(255,255,255,0.04)',
+                  border: activeCategory === cat ? '1px solid transparent' : '1px solid rgba(255,255,255,0.08)',
+                  color: activeCategory === cat ? 'white' : 'rgba(255,255,255,0.4)',
+                  boxShadow: activeCategory === cat ? '0 0 20px rgba(99,102,241,0.35)' : 'none',
+                  fontFamily: "'Space Grotesk', sans-serif",
+                }}
               >
                 {cat}
               </button>
@@ -245,107 +205,155 @@ const ProjectsSection = () => {
 
         {/* Projects Grid */}
         <motion.div
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          key={activeCategory}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-5"
+          layout
         >
-          {filtered.map((project) => (
-            <motion.div
-              key={project.id}
-              variants={cardVariants}
-              className={`group relative rounded-2xl border border-border/50 ${project.borderGlow} bg-card/70 backdrop-blur-sm transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)] hover:-translate-y-1 overflow-hidden flex flex-col`}
-            >
-              {/* Gradient background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`} />
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project, i) => (
+              <motion.div
+                key={project.id}
+                className="group relative rounded-3xl overflow-hidden flex flex-col transition-all duration-500 cursor-default"
+                style={{
+                  background: 'rgba(255,255,255,0.025)',
+                  border: `1px solid rgba(255,255,255,0.06)`,
+                }}
+                initial={{ opacity: 0, y: 30, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.94 }}
+                transition={{ delay: i * 0.07, duration: 0.45 }}
+                whileHover={{
+                  y: -6,
+                  borderColor: project.borderColor,
+                  boxShadow: `0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px ${project.borderColor}, inset 0 1px 0 rgba(255,255,255,0.04)`,
+                }}
+              >
+                {/* Gradient overlay on hover */}
+                <div
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+                  style={{ background: `linear-gradient(135deg, ${project.glowColor}, transparent)` }}
+                />
 
-              <div className="relative z-10 p-6 flex flex-col h-full">
-                {/* Top row: Icon + badge */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.iconBg} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500`}>
-                    <span className="text-xl">{project.emoji}</span>
+                {/* Top accent line */}
+                <div
+                  className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{ background: `linear-gradient(90deg, transparent, ${project.accentColor}, transparent)` }}
+                />
+
+                <div className="relative z-10 p-6 flex flex-col h-full">
+                  {/* Header row */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl"
+                      style={{
+                        background: project.glowColor,
+                        border: `1px solid ${project.borderColor}`,
+                      }}
+                    >
+                      {project.emoji}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {project.liveLink && (
+                        <span className="flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                          Live
+                        </span>
+                      )}
+                      {project.badgeText && (
+                        <span
+                          className="px-2.5 py-1 rounded-full text-[11px] font-bold"
+                          style={{
+                            background: `${project.glowColor}`,
+                            border: `1px solid ${project.borderColor}`,
+                            color: project.accentColor,
+                            fontFamily: "'Space Grotesk', sans-serif",
+                          }}
+                        >
+                          {project.badgeText}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                    {project.stars > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
-                        {project.stars}
-                      </span>
-                    )}
-                    {project.liveLink && (
-                      <span className="flex items-center gap-1 text-emerald-500 font-medium">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                        Live
-                      </span>
-                    )}
-                    {project.badge && (
-                      <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">
-                        {project.badge}
-                      </span>
-                    )}
-                  </div>
-                </div>
 
-                {/* Title & subtitle */}
-                <h3 className="text-lg font-bold text-foreground font-heading mb-1 leading-tight group-hover:text-white transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-xs font-semibold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-3">
-                  {project.subtitle}
-                </p>
-
-                {/* Description */}
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4 flex-1">
-                  {project.description}
-                </p>
-
-                {/* Highlights */}
-                <ul className="space-y-1.5 mb-4">
-                  {project.highlights.map((h, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs text-muted-foreground/80">
-                      <span className="mt-1.5 w-1 h-1 bg-indigo-400 rounded-full flex-shrink-0" />
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Tech tags */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {project.tech.map(t => (
-                    <span key={t} className="px-2 py-0.5 text-xs font-medium bg-secondary/60 text-muted-foreground rounded-md border border-border/40 hover:border-indigo-500/30 transition-colors">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Action buttons */}
-                <div className="flex gap-2 mt-auto">
-                  <a
-                    href={project.githubLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-foreground/5 border border-border/50 text-sm font-semibold text-foreground hover:bg-foreground/10 hover:border-indigo-500/30 transition-all duration-300"
+                  {/* Title & subtitle */}
+                  <h3
+                    className="text-base font-black mb-1 leading-tight text-white/90 group-hover:text-white transition-colors duration-300"
+                    style={{ fontFamily: "'Syne', sans-serif" }}
                   >
-                    <Github className="w-4 h-4" />
-                    Code
-                  </a>
-                  {project.liveLink && (
+                    {project.title}
+                  </h3>
+                  <p
+                    className="text-xs font-semibold mb-3"
+                    style={{ color: project.accentColor, fontFamily: "'JetBrains Mono', monospace" }}
+                  >
+                    {project.subtitle}
+                  </p>
+
+                  {/* Description */}
+                  <p className="text-sm text-white/40 leading-relaxed mb-4 flex-1">{project.description}</p>
+
+                  {/* Highlights */}
+                  <ul className="space-y-1.5 mb-4">
+                    {project.highlights.map((h, j) => (
+                      <li key={j} className="flex items-start gap-2 text-xs text-white/40">
+                        <span className="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style={{ background: project.accentColor }} />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* Tech tags */}
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {project.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 text-[11px] font-medium rounded-md text-white/35"
+                        style={{
+                          background: 'rgba(255,255,255,0.04)',
+                          border: '1px solid rgba(255,255,255,0.07)',
+                          fontFamily: "'Space Grotesk', sans-serif",
+                        }}
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Action buttons */}
+                  <div className="flex gap-2 mt-auto">
                     <a
-                      href={project.liveLink}
+                      href={project.githubLink}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white text-sm font-semibold hover:shadow-[0_4px_15px_rgba(99,102,241,0.4)] transition-all duration-300"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white/60 hover:text-white transition-all duration-300"
+                      style={{
+                        background: 'rgba(255,255,255,0.04)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                      }}
                     >
-                      <ExternalLink className="w-4 h-4" />
-                      Live Demo
+                      <Github className="w-3.5 h-3.5" />
+                      Code
                     </a>
-                  )}
+                    {project.liveLink && (
+                      <a
+                        href={project.liveLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-300"
+                        style={{
+                          background: `linear-gradient(135deg, ${project.accentColor}22, ${project.accentColor}11)`,
+                          border: `1px solid ${project.borderColor}`,
+                          color: project.accentColor,
+                        }}
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Demo
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
 
         {/* GitHub CTA */}
@@ -356,20 +364,28 @@ const ProjectsSection = () => {
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <a
+          <motion.a
             href="https://github.com/Shivprasadpravindongapure"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl border border-border/60 bg-card/50 backdrop-blur-sm text-muted-foreground hover:text-foreground hover:border-indigo-500/40 hover:bg-card/80 transition-all duration-500 font-semibold group"
+            className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-white/60 hover:text-white transition-all duration-400"
+            style={{
+              background: 'rgba(255,255,255,0.03)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              fontFamily: "'Space Grotesk', sans-serif",
+            }}
+            whileHover={{
+              scale: 1.03,
+              background: 'rgba(99,102,241,0.08)',
+              borderColor: 'rgba(99,102,241,0.3)',
+              color: '#818cf8',
+            }}
           >
-            <Github className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+            <Github className="w-4 h-4" />
             View All Projects on GitHub
-            <Zap className="w-4 h-4 text-indigo-500 group-hover:scale-110 transition-transform" />
-          </a>
+          </motion.a>
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default ProjectsSection;
+}
