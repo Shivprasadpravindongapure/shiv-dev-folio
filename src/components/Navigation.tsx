@@ -1,37 +1,50 @@
-import { useState } from 'react';
-import { Menu, X, Code, Github, Mail, Zap, Rocket, Star, Globe, Heart, Sparkles } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
-  { href: '#about', label: 'About', icon: Sparkles },
-  { href: '#skills', label: 'Skills', icon: Code },
-  { href: '#projects', label: 'Projects', icon: Rocket },
-  { href: '#developer-profiles', label: 'Analytics', icon: Zap },
-  { href: '#resume', label: 'Resume', icon: Star },
-  { href: '#achievements', label: 'Awards', icon: Globe },
-  { href: '#contact', label: 'Contact', icon: Heart },
+  { href: '#about',        label: 'About' },
+  { href: '#skills',       label: 'Skills' },
+  { href: '#projects',     label: 'Projects' },
+  { href: '#experience',   label: 'Experience' },
+  { href: '#github',       label: 'GitHub' },
+  { href: '#profiles',     label: 'Profiles' },
+  { href: '#achievements', label: 'Achievements' },
+  { href: '#contact',      label: 'Contact' },
 ];
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const scrollProgress = useRef(0);
+  const barRef = useRef<HTMLDivElement>(null);
 
-  // Track scroll
-  if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', () => {
-      setIsScrolled(window.scrollY > 80);
-      const sections = navLinks.map(l => l.href.replace('#', ''));
-      const offset = window.scrollY + 120;
-      for (const s of sections) {
-        const el = document.getElementById(s);
+  useEffect(() => {
+    const onScroll = () => {
+      setIsScrolled(window.scrollY > 60);
+
+      // Scroll progress bar
+      const docH = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress.current = docH > 0 ? (window.scrollY / docH) * 100 : 0;
+      if (barRef.current) {
+        barRef.current.style.width = `${scrollProgress.current}%`;
+      }
+
+      // Active section detection
+      const offset = window.scrollY + 140;
+      for (const link of navLinks) {
+        const id = link.href.replace('#', '');
+        const el = document.getElementById(id);
         if (el && offset >= el.offsetTop && offset < el.offsetTop + el.offsetHeight) {
-          setActiveSection(s);
+          setActiveSection(id);
           break;
         }
       }
-    }, { passive: true });
-  }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const handleNav = (href: string) => {
     const el = document.querySelector(href);
@@ -41,115 +54,114 @@ export default function Navigation() {
 
   return (
     <>
+      {/* Scroll progress bar */}
+      <div
+        ref={barRef}
+        className="fixed top-0 left-0 h-[2px] z-[1001] transition-none pointer-events-none"
+        style={{ background: 'linear-gradient(90deg, #7C6EFA, #A78BFA)', width: '0%' }}
+      />
+
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
         style={{
-          background: isScrolled ? 'rgba(10, 12, 20, 0.85)' : 'transparent',
-          borderBottom: isScrolled ? '1px solid rgba(99,102,241,0.12)' : '1px solid transparent',
-          backdropFilter: isScrolled ? 'blur(24px)' : 'none',
-          WebkitBackdropFilter: isScrolled ? 'blur(24px)' : 'none',
-          boxShadow: isScrolled ? '0 4px 30px rgba(0,0,0,0.3)' : 'none',
+          background: isScrolled ? 'rgba(8,8,16,0.88)' : 'transparent',
+          borderBottom: isScrolled ? '1px solid rgba(124,110,250,0.1)' : '1px solid transparent',
+          backdropFilter: isScrolled ? 'blur(20px)' : 'none',
+          WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'none',
         }}
-        initial={{ y: -100 }}
+        initial={{ y: -80 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <div className="container-narrow mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo */}
-          <motion.a
+          <a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="flex items-center gap-2.5 group"
-            whileHover={{ scale: 1.03 }}
           >
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center font-black text-white text-sm"
+              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-sm"
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                boxShadow: '0 0 20px rgba(99,102,241,0.4)',
-                fontFamily: "'Syne', sans-serif",
+                background: 'linear-gradient(135deg, #7C6EFA, #A78BFA)',
+                fontFamily: "'Space Grotesk', sans-serif",
               }}
             >
               S
             </div>
             <span
-              className="hidden sm:block font-bold text-white/80 group-hover:text-white transition-colors"
-              style={{ fontFamily: "'Syne', sans-serif", letterSpacing: '-0.02em' }}
+              className="hidden sm:block font-semibold text-white/70 group-hover:text-white transition-colors text-sm"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
             >
-              hivprasad
+              Shivprasad
             </span>
-          </motion.a>
+          </a>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav className="hidden lg:flex items-center gap-0.5">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.replace('#', '');
               return (
-                <motion.a
+                <a
                   key={link.href}
                   href={link.href}
                   onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
-                  className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  className={`relative px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all duration-250 ${
                     isActive
-                      ? 'text-indigo-400'
-                      : 'text-white/40 hover:text-white/80'
+                      ? 'text-[#A78BFA]'
+                      : 'text-white/40 hover:text-white/75'
                   }`}
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '0.01em' }}
-                  whileHover={{ y: -1 }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   {isActive && (
                     <motion.div
-                      className="absolute inset-0 rounded-xl"
-                      layoutId="nav-active-pill"
-                      style={{ background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.2)' }}
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 rounded-lg"
+                      layoutId="nav-pill"
+                      style={{ background: 'rgba(124,110,250,0.1)', border: '1px solid rgba(124,110,250,0.18)' }}
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
                   <span className="relative z-10">{link.label}</span>
-                </motion.a>
+                </a>
               );
             })}
           </nav>
 
-          {/* Desktop hire me */}
-          <div className="hidden lg:flex items-center gap-3">
-            <motion.a
+          {/* Desktop CTA */}
+          <div className="hidden lg:flex items-center gap-2">
+            <a
               href="https://github.com/Shivprasadpravindongapure"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-9 h-9 rounded-xl text-white/40 hover:text-white hover:bg-white/5 transition-all duration-300 border border-white/8"
-              whileHover={{ scale: 1.08, y: -1 }}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/5 transition-all duration-250"
+              style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+              aria-label="GitHub"
             >
               <Github className="w-4 h-4" />
-            </motion.a>
-            <motion.a
+            </a>
+            <a
               href="#contact"
               onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}
-              className="flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all duration-300"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all duration-250"
               style={{
-                background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                boxShadow: '0 0 16px rgba(99,102,241,0.3)',
-                fontFamily: "'Space Grotesk', sans-serif",
+                background: 'linear-gradient(135deg, #7C6EFA, #7C3AED)',
+                fontFamily: "'Inter', sans-serif",
               }}
-              whileHover={{ scale: 1.05, boxShadow: '0 0 28px rgba(99,102,241,0.5)' }}
-              whileTap={{ scale: 0.97 }}
             >
               <Mail className="w-3.5 h-3.5" />
               Hire Me
-            </motion.a>
+            </a>
           </div>
 
           {/* Mobile toggle */}
-          <motion.button
+          <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden flex items-center justify-center w-10 h-10 rounded-xl text-white/60 hover:text-white transition-colors"
-            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-white/50 hover:text-white transition-colors"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
             aria-label="Toggle menu"
           >
-            {isMobileOpen ? <X className="w-5 h-5 text-indigo-400" /> : <Menu className="w-5 h-5" />}
-          </motion.button>
+            {isMobileOpen ? <X className="w-4.5 h-4.5 text-[#A78BFA]" /> : <Menu className="w-4.5 h-4.5" />}
+          </button>
         </div>
       </motion.nav>
 
@@ -158,20 +170,13 @@ export default function Navigation() {
         {isMobileOpen && (
           <motion.div
             className="fixed inset-0 z-40 lg:hidden flex flex-col"
-            style={{
-              background: 'rgba(8, 10, 18, 0.98)',
-              backdropFilter: 'blur(30px)',
-              WebkitBackdropFilter: 'blur(30px)',
-            }}
+            style={{ background: 'rgba(8,8,16,0.97)', backdropFilter: 'blur(24px)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2 }}
           >
-            {/* Grid bg */}
-            <div className="absolute inset-0 bg-grid opacity-40 pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col items-center justify-center flex-1 gap-3 px-8 py-24">
+            <div className="flex flex-col items-center justify-center flex-1 gap-2 px-8 py-24">
               {navLinks.map((link, i) => {
                 const isActive = activeSection === link.href.replace('#', '');
                 return (
@@ -179,38 +184,22 @@ export default function Navigation() {
                     key={link.href}
                     href={link.href}
                     onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
-                    className="w-full max-w-sm flex items-center justify-between p-5 rounded-2xl transition-all duration-300"
+                    className="w-full max-w-xs flex items-center justify-between px-5 py-4 rounded-xl transition-all duration-250"
                     style={{
-                      background: isActive ? 'rgba(99,102,241,0.12)' : 'rgba(255,255,255,0.03)',
-                      border: isActive ? '1px solid rgba(99,102,241,0.3)' : '1px solid rgba(255,255,255,0.06)',
+                      background: isActive ? 'rgba(124,110,250,0.1)' : 'rgba(255,255,255,0.025)',
+                      border: isActive ? '1px solid rgba(124,110,250,0.25)' : '1px solid rgba(255,255,255,0.05)',
                     }}
-                    initial={{ opacity: 0, x: -20 }}
+                    initial={{ opacity: 0, x: -16 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04, duration: 0.3 }}
+                    transition={{ delay: i * 0.04 }}
                   >
-                    <div className="flex items-center gap-4">
-                      <div
-                        className="w-10 h-10 rounded-xl flex items-center justify-center"
-                        style={{
-                          background: isActive ? 'rgba(99,102,241,0.2)' : 'rgba(255,255,255,0.05)',
-                          border: '1px solid rgba(255,255,255,0.08)',
-                        }}
-                      >
-                        <link.icon className={`w-5 h-5 ${isActive ? 'text-indigo-400' : 'text-white/40'}`} />
-                      </div>
-                      <span
-                        className={`font-bold text-lg ${isActive ? 'text-indigo-400' : 'text-white/70'}`}
-                        style={{ fontFamily: "'Syne', sans-serif" }}
-                      >
-                        {link.label}
-                      </span>
-                    </div>
-                    {isActive && (
-                      <div
-                        className="w-2 h-2 rounded-full"
-                        style={{ background: '#818cf8', boxShadow: '0 0 10px rgba(129,140,248,0.8)' }}
-                      />
-                    )}
+                    <span
+                      className={`font-semibold text-base ${isActive ? 'text-[#A78BFA]' : 'text-white/60'}`}
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      {link.label}
+                    </span>
+                    {isActive && <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#A78BFA', boxShadow: '0 0 8px rgba(167,139,250,0.8)' }} />}
                   </motion.a>
                 );
               })}
@@ -218,18 +207,42 @@ export default function Navigation() {
               <motion.a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}
-                className="w-full max-w-sm mt-4 py-5 rounded-2xl font-bold text-white text-lg text-center transition-all duration-300"
+                className="w-full max-w-xs mt-4 py-4 rounded-xl font-bold text-white text-center"
                 style={{
-                  background: 'linear-gradient(135deg, #6366f1, #a855f7)',
-                  boxShadow: '0 0 30px rgba(99,102,241,0.4)',
-                  fontFamily: "'Syne', sans-serif",
+                  background: 'linear-gradient(135deg, #7C6EFA, #7C3AED)',
+                  fontFamily: "'Space Grotesk', sans-serif",
                 }}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navLinks.length * 0.04 + 0.1 }}
               >
-                Hire Me Today
+                Hire Me
               </motion.a>
+
+              <motion.div
+                className="flex items-center gap-3 mt-3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: navLinks.length * 0.04 + 0.2 }}
+              >
+                {[
+                  { icon: Github, href: 'https://github.com/Shivprasadpravindongapure', label: 'GitHub' },
+                  { icon: Linkedin, href: 'https://www.linkedin.com/in/shivprasad-dongapure-35760a290', label: 'LinkedIn' },
+                  { icon: Mail, href: 'mailto:Prasaddongapure7660@gmail.com', label: 'Email' },
+                ].map((s) => (
+                  <a
+                    key={s.label}
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={s.label}
+                    className="w-10 h-10 rounded-lg flex items-center justify-center text-white/35 hover:text-white transition-colors"
+                    style={{ border: '1px solid rgba(255,255,255,0.07)' }}
+                  >
+                    <s.icon className="w-4 h-4" />
+                  </a>
+                ))}
+              </motion.div>
             </div>
           </motion.div>
         )}
