@@ -1,99 +1,86 @@
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from "react";
+import { motion, useSpring } from "framer-motion";
 
-const AnimatedCursor = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [cursorVariant, setCursorVariant] = useState('default');
+export const AnimatedCursor = () => {
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isClicking, setIsClicking] = useState(false);
+
+  const cursorX = useSpring(-100, { stiffness: 500, damping: 28 });
+  const cursorY = useSpring(-100, { stiffness: 500, damping: 28 });
+  const cursorXOuter = useSpring(-100, { stiffness: 150, damping: 20 });
+  const cursorYOuter = useSpring(-100, { stiffness: 150, damping: 20 });
 
   useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
+    const moveCursor = (e: MouseEvent) => {
+      cursorX.set(e.clientX - 4);
+      cursorY.set(e.clientY - 4);
+      cursorXOuter.set(e.clientX - 16);
+      cursorYOuter.set(e.clientY - 16);
     };
 
-    const handleMouseDown = () => setCursorVariant('click');
-    const handleMouseUp = () => setCursorVariant('default');
-    const handleMouseEnter = () => setCursorVariant('hover');
-    const handleMouseLeave = () => setCursorVariant('default');
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName.toLowerCase() === "a" ||
+        target.tagName.toLowerCase() === "button" ||
+        target.closest("a") ||
+        target.closest("button")
+      ) {
+        setIsHovering(true);
+      } else {
+        setIsHovering(false);
+      }
+    };
 
-    window.addEventListener('mousemove', updateMousePosition);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
+    const handleMouseDown = () => setIsClicking(true);
+    const handleMouseUp = () => setIsClicking(false);
 
-    const interactiveElements = document.querySelectorAll('a, button, [role="button"]');
-    interactiveElements.forEach((el) => {
-      el.addEventListener('mouseenter', handleMouseEnter);
-      el.addEventListener('mouseleave', handleMouseLeave);
-    });
+    window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mouseover", handleMouseOver);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
-      window.removeEventListener('mousemove', updateMousePosition);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-      interactiveElements.forEach((el) => {
-        el.removeEventListener('mouseenter', handleMouseEnter);
-        el.removeEventListener('mouseleave', handleMouseLeave);
-      });
+      window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [cursorX, cursorY, cursorXOuter, cursorYOuter]);
 
-  const variants = {
-    default: {
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
-      backgroundColor: 'rgba(148, 163, 184, 0.3)',
-      mixBlendMode: 'difference' as const,
-      transition: {
-        type: 'spring',
-        mass: 0.5,
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-    hover: {
-      x: mousePosition.x - 24,
-      y: mousePosition.y - 24,
-      backgroundColor: 'rgba(203, 213, 225, 0.4)',
-      mixBlendMode: 'difference' as const,
-      transition: {
-        type: 'spring',
-        mass: 0.5,
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-    click: {
-      x: mousePosition.x - 8,
-      y: mousePosition.y - 8,
-      backgroundColor: 'rgba(241, 245, 249, 0.5)',
-      mixBlendMode: 'difference' as const,
-      transition: {
-        type: 'spring',
-        mass: 0.5,
-        stiffness: 100,
-        damping: 10,
-      },
-    },
-  };
+  // Don't render on touch devices
+  if (typeof window !== "undefined" && window.matchMedia("(hover: none)").matches) {
+    return null;
+  }
 
   return (
     <>
+      {/* Inner Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 rounded-full pointer-events-none z-50 hidden lg:block"
-        variants={variants}
-        animate={cursorVariant}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-2 h-2 rounded-full bg-slate-400/50 pointer-events-none z-50 hidden lg:block"
+        className="fixed top-0 left-0 w-2 h-2 bg-white rounded-full mix-blend-difference pointer-events-none z-[9999]"
+        style={{
+          x: cursorX,
+          y: cursorY,
+        }}
         animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
+          scale: isClicking ? 0.5 : isHovering ? 1.5 : 1,
         }}
-        transition={{
-          type: 'spring',
-          mass: 0.1,
-          stiffness: 800,
-          damping: 25,
+        transition={{ duration: 0.15 }}
+      />
+      {/* Outer Ring */}
+      <motion.div
+        ref={cursorRef}
+        className="fixed top-0 left-0 w-8 h-8 border border-white/40 rounded-full mix-blend-difference pointer-events-none z-[9998]"
+        style={{
+          x: cursorXOuter,
+          y: cursorYOuter,
         }}
+        animate={{
+          scale: isClicking ? 0.8 : isHovering ? 1.5 : 1,
+          opacity: isHovering ? 0.2 : 1,
+        }}
+        transition={{ duration: 0.15 }}
       />
     </>
   );

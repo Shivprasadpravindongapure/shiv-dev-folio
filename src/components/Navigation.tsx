@@ -1,252 +1,131 @@
-import { useState, useEffect, useRef } from 'react';
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { Menu, X, Moon, Sun, Download } from 'lucide-react';
 
-const navLinks = [
-  { href: '#about',        label: 'About' },
-  { href: '#skills',       label: 'Skills' },
-  { href: '#projects',     label: 'Projects' },
-  { href: '#experience',   label: 'Experience' },
-  { href: '#github',       label: 'GitHub' },
-  { href: '#profiles',     label: 'Profiles' },
-  { href: '#achievements', label: 'Achievements' },
-  { href: '#contact',      label: 'Contact' },
-];
-
-export default function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState('');
-  const scrollProgress = useRef(0);
-  const barRef = useRef<HTMLDivElement>(null);
+const Navigation = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
   useEffect(() => {
-    const onScroll = () => {
-      setIsScrolled(window.scrollY > 60);
-
-      // Scroll progress bar
-      const docH = document.documentElement.scrollHeight - window.innerHeight;
-      scrollProgress.current = docH > 0 ? (window.scrollY / docH) * 100 : 0;
-      if (barRef.current) {
-        barRef.current.style.width = `${scrollProgress.current}%`;
-      }
-
-      // Active section detection
-      const offset = window.scrollY + 140;
-      for (const link of navLinks) {
-        const id = link.href.replace('#', '');
-        const el = document.getElementById(id);
-        if (el && offset >= el.offsetTop && offset < el.offsetTop + el.offsetHeight) {
-          setActiveSection(id);
-          break;
-        }
-      }
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleNav = (href: string) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-    setIsMobileOpen(false);
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const navLinks = [
+    { name: 'About', href: '#about' },
+    { name: 'Skills', href: '#skills' },
+    { name: 'Projects', href: '#projects' },
+    { name: 'Contact', href: '#contact' },
+  ];
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
   return (
-    <>
-      {/* Scroll progress bar */}
-      <div
-        ref={barRef}
-        className="fixed top-0 left-0 h-[2px] z-[1001] transition-none pointer-events-none"
-        style={{ background: 'linear-gradient(90deg, #7C6EFA, #A78BFA)', width: '0%' }}
-      />
-
-      <motion.nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-400"
-        style={{
-          background: isScrolled ? 'rgba(8,8,16,0.88)' : 'transparent',
-          borderBottom: isScrolled ? '1px solid rgba(124,110,250,0.1)' : '1px solid transparent',
-          backdropFilter: isScrolled ? 'blur(20px)' : 'none',
-          WebkitBackdropFilter: isScrolled ? 'blur(20px)' : 'none',
-        }}
-        initial={{ y: -80 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      >
-        <div className="container-narrow mx-auto px-6 h-16 flex items-center justify-between">
-          {/* Logo */}
-          <a
-            href="#"
-            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-            className="flex items-center gap-2.5 group"
-          >
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-white text-sm"
-              style={{
-                background: 'linear-gradient(135deg, #7C6EFA, #A78BFA)',
-                fontFamily: "'Space Grotesk', sans-serif",
-              }}
-            >
-              S
-            </div>
-            <span
-              className="hidden sm:block font-semibold text-white/70 group-hover:text-white transition-colors text-sm"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Shivprasad
-            </span>
-          </a>
-
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-0.5">
-            {navLinks.map((link) => {
-              const isActive = activeSection === link.href.replace('#', '');
-              return (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
-                  className={`relative px-3.5 py-2 rounded-lg text-[13px] font-medium transition-all duration-250 ${
-                    isActive
-                      ? 'text-[#A78BFA]'
-                      : 'text-white/40 hover:text-white/75'
-                  }`}
-                  style={{ fontFamily: "'Inter', sans-serif" }}
-                >
-                  {isActive && (
-                    <motion.div
-                      className="absolute inset-0 rounded-lg"
-                      layoutId="nav-pill"
-                      style={{ background: 'rgba(124,110,250,0.1)', border: '1px solid rgba(124,110,250,0.18)' }}
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                  <span className="relative z-10">{link.label}</span>
-                </a>
-              );
-            })}
-          </nav>
-
-          {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-2">
-            <a
-              href="https://github.com/Shivprasadpravindongapure"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-8 h-8 flex items-center justify-center rounded-lg text-white/35 hover:text-white hover:bg-white/5 transition-all duration-250"
-              style={{ border: '1px solid rgba(255,255,255,0.07)' }}
-              aria-label="GitHub"
-            >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href="#contact"
-              onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}
-              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all duration-250"
-              style={{
-                background: 'linear-gradient(135deg, #7C6EFA, #7C3AED)',
-                fontFamily: "'Inter', sans-serif",
-              }}
-            >
-              <Mail className="w-3.5 h-3.5" />
-              Hire Me
-            </a>
+    <nav
+      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-navy/80 backdrop-blur-[12px] border-b border-white/5 shadow-lg' : 'bg-transparent'
+      }`}
+    >
+      <div className="container-narrow px-6 py-4 flex items-center justify-between">
+        {/* Logo Monogram */}
+        <a href="#" className="relative group">
+          <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center transition-all group-hover:border-accent/50 group-hover:shadow-[0_0_15px_rgba(99,102,241,0.3)]">
+            <span className="font-heading font-bold text-lg text-white">SD</span>
           </div>
+        </a>
 
-          {/* Mobile toggle */}
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center space-x-8">
+          {navLinks.map((link) => (
+            <a
+              key={link.name}
+              href={link.href}
+              className="text-text-muted hover:text-white text-sm font-medium transition-colors"
+            >
+              {link.name}
+            </a>
+          ))}
+        </div>
+
+        {/* Right Actions */}
+        <div className="hidden md:flex items-center space-x-4">
           <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-lg text-white/50 hover:text-white transition-colors"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}
-            aria-label="Toggle menu"
+            onClick={toggleTheme}
+            className="p-2 text-text-muted hover:text-white hover:bg-white/5 rounded-full transition-colors"
+            aria-label="Toggle Theme"
           >
-            {isMobileOpen ? <X className="w-4.5 h-4.5 text-[#A78BFA]" /> : <Menu className="w-4.5 h-4.5" />}
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+          
+          <a
+            href="/shivprasad_dongapure.pdf"
+            download="shivprasad_dongapure.pdf"
+            className="flex items-center space-x-2 px-4 py-2 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent hover:text-white transition-all font-medium text-sm hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]"
+          >
+            <Download size={16} />
+            <span>Resume</span>
+          </a>
+        </div>
+
+        {/* Mobile Menu Toggle */}
+        <div className="md:hidden flex items-center">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="p-2 text-text-muted hover:text-white"
+          >
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
-      </motion.nav>
+      </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 lg:hidden flex flex-col"
-            style={{ background: 'rgba(8,8,16,0.97)', backdropFilter: 'blur(24px)' }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <div className="flex flex-col items-center justify-center flex-1 gap-2 px-8 py-24">
-              {navLinks.map((link, i) => {
-                const isActive = activeSection === link.href.replace('#', '');
-                return (
-                  <motion.a
-                    key={link.href}
-                    href={link.href}
-                    onClick={(e) => { e.preventDefault(); handleNav(link.href); }}
-                    className="w-full max-w-xs flex items-center justify-between px-5 py-4 rounded-xl transition-all duration-250"
-                    style={{
-                      background: isActive ? 'rgba(124,110,250,0.1)' : 'rgba(255,255,255,0.025)',
-                      border: isActive ? '1px solid rgba(124,110,250,0.25)' : '1px solid rgba(255,255,255,0.05)',
-                    }}
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.04 }}
-                  >
-                    <span
-                      className={`font-semibold text-base ${isActive ? 'text-[#A78BFA]' : 'text-white/60'}`}
-                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                    >
-                      {link.label}
-                    </span>
-                    {isActive && <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#A78BFA', boxShadow: '0 0 8px rgba(167,139,250,0.8)' }} />}
-                  </motion.a>
-                );
-              })}
-
-              <motion.a
-                href="#contact"
-                onClick={(e) => { e.preventDefault(); handleNav('#contact'); }}
-                className="w-full max-w-xs mt-4 py-4 rounded-xl font-bold text-white text-center"
-                style={{
-                  background: 'linear-gradient(135deg, #7C6EFA, #7C3AED)',
-                  fontFamily: "'Space Grotesk', sans-serif",
-                }}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: navLinks.length * 0.04 + 0.1 }}
+      {/* Mobile Drawer */}
+      {isOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-navy/95 backdrop-blur-[12px] border-b border-white/5 shadow-xl">
+          <div className="flex flex-col px-6 py-4 space-y-4">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-text-muted hover:text-white text-base font-medium py-2 transition-colors border-b border-white/5"
               >
-                Hire Me
-              </motion.a>
-
-              <motion.div
-                className="flex items-center gap-3 mt-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: navLinks.length * 0.04 + 0.2 }}
+                {link.name}
+              </a>
+            ))}
+            <div className="flex items-center justify-between pt-4">
+              <a
+                href="/shivprasad_dongapure.pdf"
+                download="shivprasad_dongapure.pdf"
+                className="flex items-center justify-center space-x-2 px-4 py-2 rounded-lg bg-accent/10 text-accent border border-accent/20 hover:bg-accent hover:text-white transition-all font-medium text-sm w-full mr-4"
               >
-                {[
-                  { icon: Github, href: 'https://github.com/Shivprasadpravindongapure', label: 'GitHub' },
-                  { icon: Linkedin, href: 'https://www.linkedin.com/in/shivprasad-dongapure-35760a290', label: 'LinkedIn' },
-                  { icon: Mail, href: 'mailto:Prasaddongapure7660@gmail.com', label: 'Email' },
-                ].map((s) => (
-                  <a
-                    key={s.label}
-                    href={s.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={s.label}
-                    className="w-10 h-10 rounded-lg flex items-center justify-center text-white/35 hover:text-white transition-colors"
-                    style={{ border: '1px solid rgba(255,255,255,0.07)' }}
-                  >
-                    <s.icon className="w-4 h-4" />
-                  </a>
-                ))}
-              </motion.div>
+                <Download size={16} />
+                <span>Download Resume</span>
+              </a>
+              <button
+                onClick={toggleTheme}
+                className="p-3 text-text-muted hover:text-white hover:bg-white/5 rounded-full transition-colors border border-white/5"
+              >
+                {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </div>
+        </div>
+      )}
+    </nav>
   );
-}
+};
+
+export default Navigation;

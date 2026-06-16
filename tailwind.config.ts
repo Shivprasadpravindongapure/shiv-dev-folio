@@ -63,6 +63,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        navy: {
+          DEFAULT: '#0a0f1e',
+          light: '#111827',
+        },
+        accent: {
+          DEFAULT: '#6366f1',
+          glow: '#818cf8',
+        },
+        cyan: {
+          DEFAULT: '#22d3ee',
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
