@@ -1,0 +1,162 @@
+{
+  "profile": {
+    "public_repos": 24,
+    "followers": 4,
+    "following": 5,
+    "bio": null,
+    "location": null,
+    "avatar_url": "https://avatars.githubusercontent.com/u/187841817?v=4"
+  },
+  "topRepos": [
+    {
+      "id": 1132286459,
+      "name": "shiv-dev-folio",
+      "description": null,
+      "language": "TypeScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/shiv-dev-folio",
+      "updated_at": "2026-06-16T17:19:00Z"
+    },
+    {
+      "id": 1266457434,
+      "name": "docodeago-survey-builder",
+      "description": null,
+      "language": "TypeScript",
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/docodeago-survey-builder",
+      "updated_at": "2026-06-16T10:28:20Z"
+    },
+    {
+      "id": 1270000283,
+      "name": "github-analyzer-api",
+      "description": null,
+      "language": "JavaScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/github-analyzer-api",
+      "updated_at": "2026-06-15T11:12:10Z"
+    },
+    {
+      "id": 1258962905,
+      "name": "AI-App-Compiler",
+      "description": null,
+      "language": "Python",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/AI-App-Compiler",
+      "updated_at": "2026-06-04T07:03:21Z"
+    },
+    {
+      "id": 1252241093,
+      "name": "Ai-Intern-Match",
+      "description": null,
+      "language": "TypeScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/Ai-Intern-Match",
+      "updated_at": "2026-06-01T19:19:48Z"
+    },
+    {
+      "id": 1212810310,
+      "name": "smart-civic-reporting",
+      "description": null,
+      "language": null,
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/smart-civic-reporting",
+      "updated_at": "2026-04-16T18:54:25Z"
+    },
+    {
+      "id": 1205265244,
+      "name": "workshop",
+      "description": "screening test",
+      "language": "Python",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/workshop",
+      "updated_at": "2026-04-09T04:02:02Z"
+    },
+    {
+      "id": 1202201319,
+      "name": "AI-Based-Intelligent-Traffic-Managment-System",
+      "description": "“An AI-based intelligent traffic management system that uses real-time CCTV data to detect vehicle density and dynamically control traffic signals, ensuring efficient flow and emergency vehicle priority.”",
+      "language": "JavaScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/AI-Based-Intelligent-Traffic-Managment-System",
+      "updated_at": "2026-04-05T18:46:29Z"
+    },
+    {
+      "id": 943476319,
+      "name": "Shivprasadpravindongapure",
+      "description": "Config files for my GitHub profile.",
+      "language": null,
+      "stargazers_count": 1,
+      "forks_count": 0,
+      "topics": [
+        "config",
+        "github-config"
+      ],
+      "html_url": "https://github.com/Shivprasadpravindongapure/Shivprasadpravindongapure",
+      "updated_at": "2026-03-31T04:57:35Z"
+    },
+    {
+      "id": 1187453163,
+      "name": "LinkLoom",
+      "description": "Real-time chat and video calling app using MERN, Stream API, and WebRTC.",
+      "language": "JavaScript",
+      "stargazers_count": 0,
+      "forks_count": 0,
+      "topics": [],
+      "html_url": "https://github.com/Shivprasadpravindongapure/LinkLoom",
+      "updated_at": "2026-03-24T09:56:53Z"
+    }
+  ],
+  "languages": [
+    {
+      "name": "TypeScript",
+      "bytes": 797971,
+      "percentage": "33.09"
+    },
+    {
+      "name": "JavaScript",
+      "bytes": 699972,
+      "percentage": "29.03"
+    },
+    {
+      "name": "Python",
+      "bytes": 681598,
+      "percentage": "28.27"
+    },
+    {
+      "name": "HTML",
+      "bytes": 131343,
+      "percentage": "5.45"
+    },
+    {
+      "name": "CSS",
+      "bytes": 100214,
+      "percentage": "4.16"
+    },
+    {
+      "name": "Shell",
+      "bytes": 306,
+      "percentage": "0.01"
+    },
+    {
+      "name": "Procfile",
+      "bytes": 50,
+      "percentage": "0.00"
+    }
+  ]
+}

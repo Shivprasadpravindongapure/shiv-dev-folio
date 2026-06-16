@@ -1,43 +1,54 @@
 # Shivprasad Dongapure – Developer Portfolio 🚀
 
-> This is my personal portfolio website showcasing my skills, projects, experience, and achievements as a Computer Engineering undergraduate and Software Developer.
+> A premium, dark-mode personal developer portfolio built with React, Vite, and Tailwind CSS.
 
-## Overview
-The portfolio is designed to be clean, responsive, and professional, suitable for recruiters and internship applications. It leverages modern web technologies to provide a fast and interactive experience.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://shiv-dev-folio-t2do.vercel.app)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178C6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
-## Live Website
+---
+
+## 🌐 Live Website
+
 👉 **Visit my portfolio:**  
 🔗 https://shiv-dev-folio-t2do.vercel.app
 
-## Project Structure
+## 📸 Screenshots
+*(Coming soon! Placeholders below)*
+- `public/screenshots/hero.png`
+- `public/screenshots/projects.png`
+- `public/screenshots/stats.png`
+
+## 🏗️ Project Structure
 
 | File / Folder | Description |
 |---------------|-------------|
 | `public/` | Static assets, including the resume PDF. |
 | `src/` | Main source code directory. |
-| `src/components/` | Reusable React components (e.g., UI elements). |
-| `src/hooks/` | Custom React hooks. |
-| `src/pages/` | Application page components. |
-| `src/lib/` | Utility functions and libraries. |
-| `src/App.tsx` & `main.tsx` | Main application entry points. |
-| `package.json` | Project metadata, dependencies, and scripts. |
-| `tailwind.config.ts` | Tailwind CSS configuration file. |
-| `vite.config.ts` | Vite bundler configuration file. |
-| `components.json` | Shadcn UI configuration file. |
+| `src/components/` | Custom React UI components (Hero, About, Projects, etc.). |
+| `src/data/` | JSON data caching, including live GitHub metrics. |
+| `src/scripts/` | Data fetching scripts for GitHub API. |
+| `src/App.tsx` | Main application composition layer. |
+| `src/index.css` | Global styling, CSS variables, and keyframe animations. |
+| `package.json` | Project metadata, dependencies, and NPM scripts. |
+| `tailwind.config.ts` | Tailwind CSS configuration file (custom colors & theme). |
 
-## Tech Stack
-- **Frontend Framework:** React 18
-- **Build Tool:** Vite
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS
-- **UI Components:** Shadcn UI, Radix UI
-- **Animations:** Framer Motion, Tailwindcss Animate
-- **Icons:** Lucide React, React Icons
+## 💻 Tech Stack
 
-## Getting Started
+- **Frontend:** React 18.3.1
+- **Build Tool:** Vite 5.4.19
+- **Language:** TypeScript 5.8.3
+- **Styling:** Tailwind CSS 3.4.17
+- **Animations:** Framer Motion 12.34.3, Tailwindcss Animate
+- **Components:** Shadcn UI, Radix UI
+- **Icons:** Lucide React, Devicons
+- **Charts:** Recharts 2.15.4
+
+## 🚀 Getting Started
 
 ### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+Make sure you have [Node.js](https://nodejs.org/) installed.
 
 ### Installation
 Clone the repository and install the dependencies:
@@ -48,7 +59,7 @@ npm install
 ```
 
 ### Environment Variables
-*(No `.env.example` file found. If the project requires environment variables for API integrations, please ensure they are properly configured.)*
+*(Currently, no environment variables are required. If setting up EmailJS locally, configure credentials within `src/components/ContactSection.tsx`)*
 
 ### Running the Project
 Start the development server:
@@ -56,7 +67,7 @@ Start the development server:
 npm run dev
 ```
 
-## Scripts
+## 📜 Scripts
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Starts the Vite development server. |
@@ -65,63 +76,9 @@ npm run dev
 | `npm run lint` | Runs ESLint to check for code issues. |
 | `npm run preview` | Locally previews the production build. |
 
-## About Me
-I am a motivated **Computer Engineering student** with strong fundamentals in **Data Structures and Algorithms**, and hands-on experience in **Full Stack Development**, **Cloud Computing**, and **IoT**.
+## 🤝 Contributing
+Direct contributions (PRs) are typically not expected for a personal portfolio, but feedback, bug reports, and suggestions via Issues are always welcome!
 
-I enjoy building scalable, real-world applications and continuously learning new technologies.
-
-## Skills & Technologies
-- **Programming Languages:** JavaScript, Python, C, C++, SQL  
-- **Web Development:** React.js, Node.js, Express.js, REST APIs  
-- **Databases:** MongoDB, MySQL  
-- **Cloud & Tools:** AWS (S3), Git, GitHub, Postman, VS Code  
-- **Core CS:** Data Structures & Algorithms, OOPs  
-- **Domains:** Full Stack Development, Cloud Computing, IoT  
-
-## Experience
-### Software Developer Intern – NTS Nihon Global
-- Worked on full stack development using React and Node.js  
-- Built and optimized RESTful APIs  
-- Collaborated in an Agile team environment  
-
-### IoT Intern – SIBIC
-- Developed IoT-based home automation systems  
-- Integrated sensors, microcontrollers, and cloud dashboards  
-
-## Projects
-### 🔹 NotegenAI – AI Lecture Summarizer
-- Converts lectures and PDFs into structured notes  
-- Uses Whisper + LLM pipeline  
-- Built using MERN stack  
-
-### 🔹 E-Commerce Web Application (Amazon Clone)
-- Full stack application with authentication, cart, and checkout  
-- React, Node.js, and MySQL based  
-
-### 🔹 CivicConnect – Smart City Issue Reporting System
-- Role-based dashboards for issue tracking  
-- AWS S3 integration for image uploads  
-- Optimized MongoDB queries for performance  
-
-## Resume
-📥 **Download my resume:**  
-[Click here](./public/SDEShiv.pdf)
-
-## Contact
-- **Email:** prasaddongapure7660@gmail.com  
-- **LinkedIn:** https://www.linkedin.com/in/shivprasad-dongapure-35760a290/  
-- **GitHub:** https://github.com/Shivprasadpravindongapure  
-- **Location:** India  
-
-## Deployment
-The portfolio is built using modern frontend tools and can be deployed using:
-- **Vercel**
-- **Netlify**
-- **GitHub Pages**
-
-## Contributing
-Since this is a personal portfolio, direct contributions (PRs) are typically not expected, but feedback and suggestions via Issues are welcome.
-
-## License
+## 📝 License
 This project is open for learning and personal use.  
 © 2026 Shivprasad Dongapure

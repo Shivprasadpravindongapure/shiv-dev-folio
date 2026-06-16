@@ -1,243 +1,209 @@
-import { Github } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Github, ExternalLink, Star, GitFork } from 'lucide-react';
+import githubData from '../data/github.json';
 
-const projects = [
+// Define featured projects with extra metadata not always in GitHub
+const featuredProjects = [
   {
-    id: 1,
-    title: 'AI App Compiler',
-    description:
-      '7-stage LLM pipeline that converts natural language prompts into validated app configurations with an automated repair loop. Integrates Gemini/OpenAI APIs with 10-rule validation engine.',
-    tech: ['Python', 'FastAPI', 'React.js', 'Gemini API', 'OpenAI API', 'SQLite'],
+    id: 'linkloom',
+    name: 'LinkLoom',
+    description: 'Real-time chat and video calling app with end-to-end encryption.',
+    tech: ['React', 'Node.js', 'Stream API', 'MongoDB'],
+    category: 'Full Stack',
+    github: 'https://github.com/Shivprasadpravindongapure/LinkLoom',
+    live: '#',
+    featured: true
+  },
+  {
+    id: 'civic',
+    name: 'Crowdsourced Civic Issue Reporting',
+    description: 'A smart city issue reporting system with role-based dashboards.',
+    tech: ['MERN', 'Leaflet.js', 'Cloudinary', 'AWS S3'],
+    category: 'Full Stack',
+    github: 'https://github.com/Shivprasadpravindongapure/smart-civic-reporting',
+    live: '#',
+    featured: true
+  },
+  {
+    id: 'traffic',
+    name: 'AI Traffic Management',
+    description: 'Intelligent traffic management system using real-time CCTV data to dynamically control signals.',
+    tech: ['YOLOv8', 'FastAPI', 'Socket.IO', 'React'],
+    category: 'AI/ML',
+    github: 'https://github.com/Shivprasadpravindongapure/AI-Based-Intelligent-Traffic-Managment-System',
+    live: '#',
+    featured: true
+  },
+  {
+    id: 'compiler',
+    name: 'AI App Compiler',
+    description: 'An intelligent compiler application leveraging LLMs to analyze and generate code.',
+    tech: ['Python', 'FastAPI', 'React', 'Gemini API'],
+    category: 'AI/ML',
     github: 'https://github.com/Shivprasadpravindongapure/AI-App-Compiler',
-    accent: '#7C6EFA',
-    accentSoft: 'rgba(124,110,250,0.12)',
-    number: '01',
-  },
-  {
-    id: 2,
-    title: 'AI Traffic Management System',
-    description:
-      'Real-time computer vision system using YOLOv8 for vehicle detection, lane-load estimation, and emergency vehicle identification. Streams live analytics via Socket.IO to an interactive dashboard.',
-    tech: ['Python', 'YOLOv8', 'OpenCV', 'FastAPI', 'React.js', 'Socket.IO'],
-    github: 'https://github.com/Shivprasadpravindongapure',
-    accent: '#A78BFA',
-    accentSoft: 'rgba(167,139,250,0.12)',
-    number: '02',
-  },
-  {
-    id: 3,
-    title: 'Crowdsourced Civic Issue Reporting',
-    description:
-      'Full-stack MERN platform with role-based dashboards for Citizens, Workers, and Admins. JWT authentication, geo-tagged issue mapping with Leaflet.js, and analytics tracking resolution metrics.',
-    tech: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'JWT', 'Leaflet.js', 'Cloudinary'],
-    github: 'https://github.com/Shivprasadpravindongapure',
-    accent: '#818CF8',
-    accentSoft: 'rgba(129,140,248,0.12)',
-    number: '03',
-  },
+    live: '#',
+    featured: true
+  }
 ];
 
-export default function ProjectsSection() {
+const ProjectsSection = () => {
+  const [filter, setFilter] = useState('All');
+  
+  // Combine featured with fetched repos, avoiding duplicates
+  const featuredIds = featuredProjects.map(p => p.github.split('/').pop()?.toLowerCase());
+  
+  const githubRepos = githubData.topRepos
+    .filter(repo => !featuredIds.includes(repo.name.toLowerCase()) && repo.name !== 'Shivprasadpravindongapure' && repo.name !== 'shiv-dev-folio')
+    .map(repo => ({
+      id: repo.id.toString(),
+      name: repo.name,
+      description: repo.description || 'No description provided.',
+      tech: [repo.language || 'Code'],
+      category: repo.language === 'Python' || repo.topics?.includes('ai') ? 'AI/ML' : 'Backend', // Simplified logic
+      github: repo.html_url,
+      live: null,
+      stars: repo.stargazers_count,
+      forks: repo.forks_count,
+      featured: false
+    }));
+
+  const allProjects = [...featuredProjects, ...githubRepos];
+  
+  const filteredProjects = filter === 'All' 
+    ? allProjects 
+    : allProjects.filter(p => p.category === filter);
+
+  const filters = ['All', 'Full Stack', 'AI/ML', 'Backend'];
+
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const item = {
+    hidden: { opacity: 0, scale: 0.9 },
+    show: { opacity: 1, scale: 1, transition: { duration: 0.3 } },
+    exit: { opacity: 0, scale: 0.9 }
+  };
+
   return (
-    <section
-      id="projects"
-      className="relative py-28 overflow-hidden"
-      style={{ background: '#10101A' }}
-    >
-      {/* Background */}
-      <div className="absolute inset-0 bg-dots-subtle opacity-40 pointer-events-none" />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 60% 40% at 100% 100%, rgba(124,110,250,0.05) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="container-narrow mx-auto px-6 lg:px-12 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <motion.div
-            className="flex justify-center mb-5"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <div className="section-badge">
-              <span>✦</span>
-              Featured Work
-            </div>
-          </motion.div>
-          <motion.h2
-            className="text-4xl sm:text-5xl font-bold tracking-tight mb-4"
-            style={{ fontFamily: "'Space Grotesk', sans-serif", color: '#F0EFF6' }}
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            Selected{' '}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #7C6EFA, #A78BFA)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Projects
-            </span>
-          </motion.h2>
-          <motion.p
-            className="text-base max-w-lg mx-auto"
-            style={{ color: '#8B8AA0', fontFamily: "'Inter', sans-serif" }}
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            Three flagship projects that demonstrate my depth across AI/ML and full-stack engineering.
-          </motion.p>
-        </div>
-
-        {/* Projects grid */}
-        <div className="grid md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-          {projects.map((project, i) => (
-            <motion.div
-              key={project.id}
-              className="group relative rounded-2xl flex flex-col overflow-hidden cursor-default"
-              style={{
-                background: '#080810',
-                border: '1px solid rgba(124,110,250,0.1)',
-              }}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              whileHover={{
-                y: -4,
-                borderColor: `${project.accent}35`,
-                boxShadow: `0 20px 60px rgba(0,0,0,0.5), 0 0 30px ${project.accentSoft}`,
-              }}
-            >
-              {/* Top accent line on hover */}
-              <div
-                className="absolute top-0 left-0 right-0 h-[1px] opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${project.accent}, transparent)`,
-                }}
-              />
-
-              {/* Hover background tint */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400 pointer-events-none"
-                style={{
-                  background: `linear-gradient(135deg, ${project.accentSoft}, transparent)`,
-                }}
-              />
-
-              <div className="relative z-10 p-6 flex flex-col h-full">
-                {/* Project number */}
-                <div
-                  className="text-5xl font-bold mb-4 select-none opacity-10 group-hover:opacity-20 transition-opacity"
-                  style={{
-                    fontFamily: "'JetBrains Mono', monospace",
-                    color: project.accent,
-                  }}
-                >
-                  {project.number}
-                </div>
-
-                {/* Title */}
-                <h3
-                  className="text-lg font-bold mb-3 leading-snug group-hover:text-white transition-colors duration-300"
-                  style={{ fontFamily: "'Space Grotesk', sans-serif", color: '#F0EFF6' }}
-                >
-                  {project.title}
-                </h3>
-
-                {/* Description */}
-                <p
-                  className="text-sm leading-relaxed mb-5 flex-1"
-                  style={{ color: '#8B8AA0', fontFamily: "'Inter', sans-serif" }}
-                >
-                  {project.description}
-                </p>
-
-                {/* Tech stack pills */}
-                <div className="flex flex-wrap gap-1.5 mb-5">
-                  {project.tech.map((t) => (
-                    <span
-                      key={t}
-                      className="px-2 py-0.5 rounded text-[11px] font-medium"
-                      style={{
-                        background: `${project.accent}0D`,
-                        border: `1px solid ${project.accent}20`,
-                        color: `${project.accent}CC`,
-                        fontFamily: "'JetBrains Mono', monospace",
-                      }}
-                    >
-                      {t}
-                    </span>
-                  ))}
-                </div>
-
-                {/* GitHub link */}
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all duration-250"
-                  style={{
-                    background: 'rgba(255,255,255,0.04)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    color: '#8B8AA0',
-                    fontFamily: "'Inter', sans-serif",
-                  }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = `${project.accent}14`;
-                    (e.currentTarget as HTMLElement).style.borderColor = `${project.accent}30`;
-                    (e.currentTarget as HTMLElement).style.color = project.accent;
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.04)';
-                    (e.currentTarget as HTMLElement).style.borderColor = 'rgba(255,255,255,0.08)';
-                    (e.currentTarget as HTMLElement).style.color = '#8B8AA0';
-                  }}
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  View on GitHub
-                </a>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* View all CTA */}
+    <section id="projects" className="py-24 relative">
+      <div className="container-narrow px-6">
+        
         <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 12 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6"
         >
-          <a
-            href="https://github.com/Shivprasadpravindongapure"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-xl text-sm font-semibold transition-all duration-250"
-            style={{
-              background: 'rgba(124,110,250,0.07)',
-              border: '1px solid rgba(124,110,250,0.18)',
-              color: '#A78BFA',
-              fontFamily: "'Inter', sans-serif",
-            }}
-          >
-            <Github className="w-4 h-4" />
-            View All Projects on GitHub
-          </a>
+          <div>
+            <span className="section-badge mb-4">04. Projects</span>
+            <h2 className="text-3xl md:text-4xl font-bold">Some things I've built.</h2>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            {filters.map(f => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  filter === f 
+                    ? 'bg-accent text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]' 
+                    : 'bg-white/5 text-text-muted hover:bg-white/10 hover:text-white'
+                }`}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </motion.div>
+
+        <motion.div 
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project) => (
+              <motion.div
+                layout
+                variants={item}
+                key={project.id}
+                className="group h-full"
+              >
+                <div className="glass h-full p-6 rounded-2xl border border-white/5 hover:border-accent/40 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(99,102,241,0.15)] flex flex-col">
+                  
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="p-2 bg-accent/10 rounded-lg text-accent">
+                      {project.featured ? <Star size={20} /> : <Github size={20} />}
+                    </div>
+                    <div className="flex gap-3">
+                      <a 
+                        href={project.github} 
+                        target="_blank" 
+                        rel="noreferrer"
+                        className="text-text-muted hover:text-accent transition-colors"
+                      >
+                        <Github size={20} />
+                      </a>
+                      {project.live && project.live !== '#' && (
+                        <a 
+                          href={project.live} 
+                          target="_blank" 
+                          rel="noreferrer"
+                          className="text-text-muted hover:text-cyan transition-colors"
+                        >
+                          <ExternalLink size={20} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">
+                    {project.name}
+                  </h3>
+                  
+                  <p className="text-text-muted text-sm mb-6 flex-grow line-clamp-3">
+                    {project.description}
+                  </p>
+
+                  {/* Optional GitHub Stats */}
+                  {(project.stars !== undefined || project.forks !== undefined) && !project.featured && (
+                    <div className="flex items-center gap-4 text-xs text-text-dim mb-4 font-mono">
+                      {project.stars > 0 && (
+                        <span className="flex items-center gap-1"><Star size={12} /> {project.stars}</span>
+                      )}
+                      {project.forks > 0 && (
+                        <span className="flex items-center gap-1"><GitFork size={12} /> {project.forks}</span>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5">
+                    {project.tech.map(t => (
+                      <span key={t} className="text-xs font-mono text-cyan">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+
+                </div>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
       </div>
     </section>
   );
-}
+};
+
+export default ProjectsSection;
