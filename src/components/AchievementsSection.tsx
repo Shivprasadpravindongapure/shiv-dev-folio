@@ -1,89 +1,104 @@
-import { motion } from 'framer-motion';
-import { Trophy, Medal, Lightbulb, Cloud, Code2 } from 'lucide-react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { achievements, certifications } from '../data/portfolio';
 
-const achievements = [
-  {
-    title: "1st Place",
-    subtitle: "National 36-Hour Hackathon",
-    icon: <Trophy size={24} />,
-    color: "text-amber",
-    bg: "bg-amber/10",
-    border: "hover:border-amber/40"
-  },
-  {
-    title: "2nd Prize",
-    subtitle: "National DSA Competition",
-    icon: <Medal size={24} />,
-    color: "text-slate-300",
-    bg: "bg-slate-300/10",
-    border: "hover:border-slate-300/40"
-  },
-  {
-    title: "Elite+Gold",
-    subtitle: "NPTEL ML & Deep Learning",
-    icon: <Lightbulb size={24} />,
-    color: "text-yellow-400",
-    bg: "bg-yellow-400/10",
-    border: "hover:border-yellow-400/40"
-  },
-  {
-    title: "Cloud Foundations",
-    subtitle: "AWS Academy (2026)",
-    icon: <Cloud size={24} />,
-    color: "text-orange-500",
-    bg: "bg-orange-500/10",
-    border: "hover:border-orange-500/40"
-  },
-  {
-    title: "200+ Solved",
-    subtitle: "LeetCode Problems",
-    icon: <Code2 size={24} />,
-    color: "text-amber",
-    bg: "bg-amber/10",
-    border: "hover:border-amber/40"
-  }
-];
+export default function AchievementsSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-100px' });
 
-const AchievementsSection = () => {
   return (
-    <section id="achievements" className="py-24 relative">
-      <div className="container-narrow px-6">
-        
+    <section id="achievements" className="section" style={{ background: 'var(--bg-secondary)' }}>
+      <div className="container" ref={ref}>
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16 text-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          style={{ marginBottom: '3.5rem' }}
         >
-          <span className="section-badge mb-4">05. Achievements</span>
-          <h2 className="text-3xl md:text-4xl font-bold">Milestones & Certifications.</h2>
+          <div className="section-label">🏆 Achievements</div>
+          <h2 className="section-title">Milestones & Certifications</h2>
+          <p className="section-subtitle">Key accomplishments and recognized qualifications across my developer journey.</p>
         </motion.div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {achievements.map((item, idx) => (
+        {/* Achievement Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '1.25rem', marginBottom: '4rem' }}>
+          {achievements.map((a, i) => (
             <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className={`glass p-6 rounded-2xl border border-white/5 ${item.border} transition-all duration-300 flex items-center gap-4 group cursor-default`}
+              key={a.id}
+              initial={{ opacity: 0, y: 25 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.45, delay: i * 0.08 }}
+              whileHover={{ y: -4 }}
+              className="card gradient-border"
+              style={{ padding: '1.5rem' }}
             >
-              <div className={`p-4 rounded-xl ${item.bg} ${item.color} group-hover:scale-110 transition-transform`}>
-                {item.icon}
+              {/* Icon + stat */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <div style={{
+                  width: '44px', height: '44px', borderRadius: 'var(--radius)',
+                  background: `linear-gradient(135deg, ${a.color})`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '1.3rem',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                }}>
+                  {a.icon}
+                </div>
+                <span style={{
+                  fontFamily: 'var(--font-mono)', fontWeight: 800, fontSize: '1.25rem',
+                  background: `linear-gradient(135deg, ${a.color})`,
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}>
+                  {a.stat}
+                </span>
               </div>
-              <div>
-                <h4 className="text-lg font-bold text-white">{item.title}</h4>
-                <p className="text-text-muted text-sm">{item.subtitle}</p>
-              </div>
+              <h3 style={{ fontWeight: 700, fontSize: '0.9375rem', color: 'var(--text)', marginBottom: '0.5rem' }}>
+                {a.title}
+              </h3>
+              <p style={{ fontSize: '0.8375rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
+                {a.description}
+              </p>
             </motion.div>
           ))}
         </div>
-        
+
+        {/* Certifications */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.35 }}
+        >
+          <h3 style={{ fontWeight: 700, fontSize: '1.125rem', color: 'var(--text)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            📜 Certifications
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1rem' }}>
+            {certifications.map((cert, i) => (
+              <motion.a
+                key={cert.id}
+                href={cert.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, x: -15 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.4 + i * 0.08 }}
+                whileHover={{ x: 4 }}
+                className="card"
+                style={{ padding: '1.25rem', display: 'flex', alignItems: 'flex-start', gap: '1rem', textDecoration: 'none' }}
+              >
+                <span style={{ fontSize: '1.5rem', flexShrink: 0 }}>{cert.icon}</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--text)', marginBottom: '0.25rem' }}>{cert.name}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{cert.issuer}</span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{cert.date}</span>
+                  </div>
+                </div>
+              </motion.a>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
-};
-
-export default AchievementsSection;
+}

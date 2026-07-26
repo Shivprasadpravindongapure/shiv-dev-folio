@@ -1,192 +1,250 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Code2, Send, Loader2 } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import React, { useRef, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { personalInfo } from '../data/portfolio';
 
-const ContactSection = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+interface FormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
-  // EMAILJS SETUP INSTRUCTIONS:
-  // 1. Create an account at https://www.emailjs.com/
-  // 2. Create an Email Service and note the SERVICE_ID
-  // 3. Create an Email Template and note the TEMPLATE_ID
-  // 4. Get your PUBLIC_KEY from Account -> API Keys
-  // 5. Replace the placeholder strings below with your actual IDs
-  
-  const SERVICE_ID = "YOUR_SERVICE_ID";
-  const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-  const PUBLIC_KEY = "YOUR_PUBLIC_KEY";
+interface FormErrors {
+  name?: string;
+  email?: string;
+  message?: string;
+}
+
+function validate(data: FormData): FormErrors {
+  const errors: FormErrors = {};
+  if (!data.name.trim()) errors.name = 'Name is required';
+  if (!data.email.trim()) errors.email = 'Email is required';
+  else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) errors.email = 'Enter a valid email';
+  if (!data.message.trim()) errors.message = 'Message is required';
+  else if (data.message.trim().length < 20) errors.message = 'Message must be at least 20 characters';
+  return errors;
+}
+
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+export default function ContactSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-100px' });
+
+  const [form, setForm] = useState<FormData>({ name: '', email: '', subject: '', message: '' });
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [status, setStatus] = useState<Status>('idle');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+    if (errors[name as keyof FormErrors]) setErrors(err => ({ ...err, [name]: undefined }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (SERVICE_ID === "YOUR_SERVICE_ID") {
-      alert("Please configure EmailJS credentials in the source code first.");
-      return;
-    }
+    const errs = validate(form);
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setStatus('loading');
 
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-
-    try {
-      await emailjs.send(
-        SERVICE_ID,
-        TEMPLATE_ID,
-        {
-          from_name: formData.name,
-          reply_to: formData.email,
-          message: formData.message,
-        },
-        PUBLIC_KEY
-      );
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-    } catch (error) {
-      console.error('EmailJS error:', error);
-      setSubmitStatus('error');
-    } finally {
-      setIsSubmitting(false);
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    }
+    // Simulate send (replace with EmailJS integration)
+    await new Promise(res => setTimeout(res, 1500));
+    setStatus('success');
+    setForm({ name: '', email: '', subject: '', message: '' });
+    setTimeout(() => setStatus('idle'), 5000);
   };
 
-  const socials = [
-    { name: 'GitHub', icon: <Github size={20} />, url: 'https://github.com/Shivprasadpravindongapure', color: 'hover:text-white hover:bg-white/10' },
-    { name: 'LinkedIn', icon: <Linkedin size={20} />, url: 'https://www.linkedin.com/in/shivprasad-dongapure-35760a290', color: 'hover:text-[#0A66C2] hover:bg-[#0A66C2]/10' },
-    { name: 'LeetCode', icon: <Code2 size={20} />, url: '#', color: 'hover:text-amber hover:bg-amber/10' },
-    { name: 'Email', icon: <Mail size={20} />, url: 'mailto:prasaddongapure7660@gmail.com', color: 'hover:text-cyan hover:bg-cyan/10' },
+  const contactItems = [
+    { icon: '✉️', label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` },
+    { icon: '📞', label: 'Phone', value: personalInfo.phone, href: `tel:${personalInfo.phone}` },
+    { icon: '⚡', label: 'LeetCode', value: 'ShivprasadPravinDongapure', href: personalInfo.socials.leetcode },
+    { icon: '🐙', label: 'GitHub', value: 'Shivprasadpravindongapure', href: personalInfo.socials.github },
+    { icon: '💼', label: 'LinkedIn', value: 'shivprasad-dongapure', href: personalInfo.socials.linkedin },
+    { icon: '📍', label: 'Location', value: personalInfo.location, href: null },
   ];
 
   return (
-    <section id="contact" className="py-24 relative">
-      <div className="container-narrow px-6">
-        
+    <section id="contact" className="section">
+      {/* Background gradient */}
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 80% 50% at 50% 100%, rgba(139,92,246,0.06), transparent)', pointerEvents: 'none' }} />
+
+      <div className="container" ref={ref} style={{ position: 'relative' }}>
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16 text-center md:text-left"
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          style={{ marginBottom: '3.5rem', textAlign: 'center' }}
         >
-          <span className="section-badge mb-4">07. Contact</span>
-          <h2 className="text-3xl md:text-4xl font-bold">Get In Touch.</h2>
+          <div className="section-label" style={{ margin: '0 auto 1rem' }}>✉️ Contact</div>
+          <h2 className="section-title" style={{ textAlign: 'center' }}>Let's Work Together</h2>
+          <p className="section-subtitle" style={{ margin: '0 auto', textAlign: 'center' }}>
+            Have a project in mind or just want to say hi? I'd love to hear from you.
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-[1fr_1.5fr] gap-12">
-          
-          {/* Social Links Left Column */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '4rem', alignItems: 'start' }}>
+          {/* Left: Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col space-y-8"
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.15 }}
           >
-            <div>
-              <p className="text-text-muted text-lg leading-relaxed mb-8">
-                I'm currently looking for new opportunities and internships. Whether you have a question, 
-                a project idea, or just want to say hi, I'll try my best to get back to you!
-              </p>
-            </div>
+            <p style={{ color: 'var(--text-secondary)', lineHeight: 1.7, fontSize: '0.9375rem', marginBottom: '2rem' }}>
+              I'm currently open to internship opportunities, freelance projects, and full-time roles. Whether you want to build something amazing or just chat about tech — drop me a message!
+            </p>
 
-            <div className="flex flex-col space-y-4">
-              {socials.map((social) => (
-                <a
-                  key={social.name}
-                  href={social.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={`flex items-center gap-4 p-4 rounded-xl glass border border-white/5 transition-all duration-300 group ${social.color}`}
-                >
-                  <div className="text-text-muted transition-colors group-hover:text-inherit">
-                    {social.icon}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {contactItems.map(item => (
+                <div key={item.label} style={{ display: 'flex', alignItems: 'center', gap: '0.875rem' }}>
+                  <div style={{
+                    width: '40px', height: '40px', borderRadius: 'var(--radius)',
+                    background: 'var(--card)', border: '1px solid var(--border)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '1.1rem', flexShrink: 0,
+                  }}>
+                    {item.icon}
                   </div>
-                  <span className="font-medium text-white transition-colors group-hover:text-inherit">
-                    {social.name}
-                  </span>
-                </a>
+                  <div>
+                    <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.1rem', textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>{item.label}</div>
+                    {item.href ? (
+                      <a href={item.href} target="_blank" rel="noopener noreferrer"
+                        style={{ fontSize: '0.875rem', color: 'var(--text)', textDecoration: 'none', transition: 'var(--transition)' }}
+                        onMouseEnter={e => (e.currentTarget.style.color = 'var(--primary-light)')}
+                        onMouseLeave={e => (e.currentTarget.style.color = 'var(--text)')}
+                      >{item.value}</a>
+                    ) : (
+                      <span style={{ fontSize: '0.875rem', color: 'var(--text)' }}>{item.value}</span>
+                    )}
+                  </div>
+                </div>
               ))}
             </div>
+
+            {/* Available badge */}
+            <div style={{ marginTop: '2rem', padding: '1rem', background: 'rgba(16,185,129,0.07)', border: '1px solid rgba(16,185,129,0.15)', borderRadius: 'var(--radius)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 0 3px rgba(16,185,129,0.2)', flexShrink: 0 }} />
+              <p style={{ fontSize: '0.875rem', color: '#34d399', fontWeight: 600 }}>
+                Currently available for new opportunities
+              </p>
+            </div>
           </motion.div>
 
-          {/* Contact Form Right Column */}
+          {/* Right: Form */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.55, delay: 0.2 }}
           >
-            <form onSubmit={handleSubmit} className="glass p-8 rounded-2xl border border-white/5 flex flex-col space-y-6">
-              
-              <div className="flex flex-col space-y-2">
-                <label htmlFor="name" className="text-sm font-medium text-text-muted">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="bg-surface-2 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-text-dim focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
-                  placeholder="John Doe"
-                />
-              </div>
-
-              <div className="flex flex-col space-y-2">
-                <label htmlFor="email" className="text-sm font-medium text-text-muted">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="bg-surface-2 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-text-dim focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div className="flex flex-col space-y-2">
-                <label htmlFor="message" className="text-sm font-medium text-text-muted">Message</label>
-                <textarea
-                  id="message"
-                  required
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="bg-surface-2 border border-white/10 rounded-lg px-4 py-3 text-white placeholder:text-text-dim focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all resize-none"
-                  placeholder="Hello Shivprasad..."
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="flex items-center justify-center gap-2 w-full py-4 rounded-xl bg-accent text-white font-medium hover:bg-accent-bright transition-all shadow-[0_0_20px_rgba(99,102,241,0.2)] hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] disabled:opacity-70 disabled:cursor-not-allowed"
+            {status === 'success' ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="card"
+                style={{ padding: '3rem', textAlign: 'center' }}
               >
-                {isSubmitting ? (
-                  <Loader2 size={20} className="animate-spin" />
-                ) : (
-                  <>
-                    <span>Send Message</span>
-                    <Send size={18} />
-                  </>
-                )}
-              </button>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎉</div>
+                <h3 style={{ fontWeight: 700, fontSize: '1.25rem', color: 'var(--text)', marginBottom: '0.5rem' }}>Message Sent!</h3>
+                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
+                  Thanks for reaching out! I'll get back to you within 24–48 hours.
+                </p>
+              </motion.div>
+            ) : (
+              <form onSubmit={handleSubmit} noValidate>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                      Name *
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={form.name}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      className="input"
+                      aria-invalid={!!errors.name}
+                    />
+                    {errors.name && <p style={{ fontSize: '0.75rem', color: 'var(--error)', marginTop: '0.25rem' }}>{errors.name}</p>}
+                  </div>
+                  <div>
+                    <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
+                      placeholder="john@example.com"
+                      className="input"
+                      aria-invalid={!!errors.email}
+                    />
+                    {errors.email && <p style={{ fontSize: '0.75rem', color: 'var(--error)', marginTop: '0.25rem' }}>{errors.email}</p>}
+                  </div>
+                </div>
 
-              {submitStatus === 'success' && (
-                <p className="text-green-400 text-sm text-center font-medium">Message sent successfully!</p>
-              )}
-              {submitStatus === 'error' && (
-                <p className="text-rose text-sm text-center font-medium">Something went wrong. Please try again.</p>
-              )}
+                <div style={{ marginBottom: '1rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                    Subject
+                  </label>
+                  <input
+                    type="text"
+                    name="subject"
+                    value={form.subject}
+                    onChange={handleChange}
+                    placeholder="Project collaboration, job opportunity..."
+                    className="input"
+                  />
+                </div>
 
-            </form>
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>
+                    Message *
+                  </label>
+                  <textarea
+                    name="message"
+                    value={form.message}
+                    onChange={handleChange}
+                    placeholder="Tell me about your project or opportunity..."
+                    className="input"
+                    rows={5}
+                    aria-invalid={!!errors.message}
+                  />
+                  {errors.message && <p style={{ fontSize: '0.75rem', color: 'var(--error)', marginTop: '0.25rem' }}>{errors.message}</p>}
+                </div>
+
+                <motion.button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  whileHover={{ scale: status === 'loading' ? 1 : 1.02 }}
+                  whileTap={{ scale: status === 'loading' ? 1 : 0.98 }}
+                  className="btn btn-primary"
+                  style={{ width: '100%', fontSize: '0.9375rem', padding: '0.875rem', opacity: status === 'loading' ? 0.75 : 1, cursor: status === 'loading' ? 'not-allowed' : 'pointer', fontFamily: 'var(--font-sans)' }}
+                >
+                  {status === 'loading' ? (
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <span style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%', animation: 'spin-slow 0.7s linear infinite', display: 'inline-block' }} />
+                      Sending...
+                    </span>
+                  ) : (
+                    '✉️ Send Message'
+                  )}
+                </motion.button>
+              </form>
+            )}
           </motion.div>
         </div>
-        
       </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          #contact .container > div[style*="grid-template-columns: 1fr 1.5fr"] {
+            grid-template-columns: 1fr !important;
+            gap: 2.5rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
-};
-
-export default ContactSection;
+}

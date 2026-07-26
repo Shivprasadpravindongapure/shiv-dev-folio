@@ -1,44 +1,54 @@
+import React, { useState } from 'react';
+import { ThemeProvider } from './hooks/useTheme';
 import Navigation from './components/Navigation';
-import AnimatedCursor from './components/AnimatedCursor';
+import CustomCursor from './components/CustomCursor';
+import ScrollProgress from './components/ScrollProgress';
+import CommandPalette from './components/CommandPalette';
 import HeroSection from './components/HeroSection';
 import AboutSection from './components/AboutSection';
 import SkillsSection from './components/SkillsSection';
 import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
+import GitHubSection from './components/GitHubSection';
 import AchievementsSection from './components/AchievementsSection';
-import GitHubActivity from './components/GitHubActivity';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 
-function App() {
+function PortfolioApp() {
+  const [cmdOpen, setCmdOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-bg text-text selection:bg-accent/30 selection:text-white font-body relative cursor-none">
-      <div className="bg-noise"></div>
-      <AnimatedCursor />
-      {/* Global Background Glows */}
-      <div className="fixed inset-0 z-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-accent/5 blur-[120px] rounded-full mix-blend-screen -translate-y-1/2"></div>
-      </div>
+    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--text)', position: 'relative' }}>
+      {/* Global overlays */}
+      <div className="noise-overlay" aria-hidden="true" />
+      <ScrollProgress />
+      <CustomCursor />
+      <CommandPalette isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
+
+      {/* Navigation */}
+      <Navigation onCommandOpen={() => setCmdOpen(true)} />
 
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col min-h-screen">
-        <Navigation />
-        
-        <main className="flex-grow">
-          <HeroSection />
-          <AboutSection />
-          <SkillsSection />
-          <ExperienceSection />
-          <ProjectsSection />
-          <AchievementsSection />
-          <GitHubActivity />
-          <ContactSection />
-        </main>
-        
-        <Footer />
-      </div>
+      <main>
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ExperienceSection />
+        <ProjectsSection />
+        <GitHubSection />
+        <AchievementsSection />
+        <ContactSection />
+      </main>
+
+      <Footer />
     </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <ThemeProvider>
+      <PortfolioApp />
+    </ThemeProvider>
+  );
+}
