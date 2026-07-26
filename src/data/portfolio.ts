@@ -335,28 +335,7 @@ export const certifications = [
   },
 ];
 
-// ============================================================
-// TESTIMONIALS
-// ============================================================
 
-export const testimonials = [
-  {
-    id: 1,
-    name: "NTS Nihon Global Manager",
-    role: "Engineering Manager",
-    company: "NTS Nihon Global",
-    text: "Shivprasad demonstrated high autonomy and strong full-stack skills during his internship, consistently delivering solid React and Express modules with clean code.",
-    avatar: "👨‍💻",
-  },
-  {
-    id: 2,
-    name: "Hackathon Judge",
-    role: "Technical Lead",
-    company: "National Hackathon",
-    text: "Shivprasad's team produced an outstanding AI system that won 1st Place. His technical execution in combining React with real-time AI APIs was exemplary.",
-    avatar: "🏆",
-  },
-];
 
 // ============================================================
 // NAV LINKS
