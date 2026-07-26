@@ -56,8 +56,10 @@ export default function ContactSection() {
 
   const contactItems = [
     { icon: '✉️', label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` },
+    { icon: '📞', label: 'Phone', value: personalInfo.phone, href: `tel:${personalInfo.phone}` },
+    { icon: '⚡', label: 'LeetCode', value: 'ShivprasadPravinDongapure', href: personalInfo.socials.leetcode },
     { icon: '🐙', label: 'GitHub', value: 'Shivprasadpravindongapure', href: personalInfo.socials.github },
-    { icon: '💼', label: 'LinkedIn', value: 'shivprasadpravindongapure', href: personalInfo.socials.linkedin },
+    { icon: '💼', label: 'LinkedIn', value: 'shivprasad-dongapure', href: personalInfo.socials.linkedin },
     { icon: '📍', label: 'Location', value: personalInfo.location, href: null },
   ];
 

@@ -112,6 +112,7 @@ export default function HeroSection() {
               {[
                 { icon: '🐙', label: 'GitHub', href: personalInfo.socials.github },
                 { icon: '💼', label: 'LinkedIn', href: personalInfo.socials.linkedin },
+                { icon: '⚡', label: 'LeetCode', href: personalInfo.socials.leetcode },
                 { icon: '✉️', label: 'Email', href: personalInfo.socials.email },
               ].map(s => (
                 <motion.a
