@@ -1,111 +1,149 @@
-import { motion } from 'framer-motion';
-import { BookOpen, Trophy, Github, GraduationCap } from 'lucide-react';
-import githubData from '../data/github.json';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { personalInfo } from '../data/portfolio';
+import { useAnimatedCounter } from '../hooks/useAnimatedCounter';
 
-const AboutSection = () => {
+function StatCard({ stat, index }: { stat: typeof personalInfo.stats[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-50px' });
+  const count = useAnimatedCounter(stat.value, 1800, inView);
+
   return (
-    <section id="about" className="py-24 relative overflow-hidden">
-      <div className="container-narrow px-6 relative z-10">
-        
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="mb-16"
-        >
-          <span className="section-badge mb-4">01. About Me</span>
-          <h2 className="text-3xl md:text-4xl font-bold">Discover my journey.</h2>
-        </motion.div>
-
-        <div className="grid md:grid-cols-[1fr_1.5fr] gap-12 items-center">
-          {/* Avatar / Visual Side */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex justify-center md:justify-start"
-          >
-            <div className="relative group">
-              {/* Glowing ring */}
-              <div className="absolute inset-0 rounded-full bg-accent blur-xl opacity-20 group-hover:opacity-40 transition-opacity duration-500"></div>
-              <div className="absolute -inset-4 rounded-full border border-accent/30 scale-[1.02] animate-[spin_10s_linear_infinite]"></div>
-              
-              <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-full bg-surface-2 border-2 border-accent/20 flex items-center justify-center overflow-hidden z-10 glass">
-                <img src="/DEV.JPG" alt="Shivprasad Dongapure" className="w-full h-full object-cover" />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Bio and Stats Side */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col space-y-8"
-          >
-            <div className="text-text-muted leading-relaxed space-y-4 text-lg">
-              <p>
-                I am a motivated <strong className="text-white">Computer Engineering student</strong> with strong fundamentals in 
-                Data Structures and Algorithms. My expertise spans across <strong className="text-white">Full Stack Development, Cloud Computing, and IoT.</strong>
-              </p>
-              <p>
-                My passion lies in building scalable architectures, integrating AI/LLMs to solve real-world problems, and constantly 
-                pushing the boundaries of what modern web technologies can achieve.
-              </p>
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="glass p-5 rounded-2xl border border-white/5 hover:border-accent/30 transition-colors group">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-accent/10 rounded-lg text-accent group-hover:bg-accent group-hover:text-white transition-colors">
-                    <Github size={20} />
-                  </div>
-                  <span className="text-sm font-medium text-text-dim uppercase tracking-wider">Repos</span>
-                </div>
-                <div className="text-3xl font-bold text-white">{githubData.profile.public_repos}+</div>
-              </div>
-
-              <div className="glass p-5 rounded-2xl border border-white/5 hover:border-amber/30 transition-colors group">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-amber/10 rounded-lg text-amber group-hover:bg-amber group-hover:text-white transition-colors">
-                    <BookOpen size={20} />
-                  </div>
-                  <span className="text-sm font-medium text-text-dim uppercase tracking-wider">LeetCode</span>
-                </div>
-                <div className="text-3xl font-bold text-white">200+</div>
-              </div>
-
-              <div className="glass p-5 rounded-2xl border border-white/5 hover:border-rose/30 transition-colors group">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-rose/10 rounded-lg text-rose group-hover:bg-rose group-hover:text-white transition-colors">
-                    <Trophy size={20} />
-                  </div>
-                  <span className="text-sm font-medium text-text-dim uppercase tracking-wider">Hackathons</span>
-                </div>
-                <div className="text-2xl font-bold text-white">1st Place</div>
-              </div>
-
-              <div className="glass p-5 rounded-2xl border border-white/5 hover:border-cyan/30 transition-colors group">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="p-2 bg-cyan/10 rounded-lg text-cyan group-hover:bg-cyan group-hover:text-white transition-colors">
-                    <GraduationCap size={20} />
-                  </div>
-                  <span className="text-sm font-medium text-text-dim uppercase tracking-wider">CGPA</span>
-                </div>
-                <div className="text-3xl font-bold text-white">8.05</div>
-                <div className="text-xs text-text-muted mt-1">B.Tech 2024-27</div>
-              </div>
-            </div>
-
-          </motion.div>
-        </div>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="card"
+      style={{ padding: '1.5rem', textAlign: 'center' }}
+    >
+      <div style={{ fontSize: '2rem', fontWeight: 900, letterSpacing: '-0.04em', color: 'var(--primary-light)' }}>
+        {count}{stat.suffix}
       </div>
-    </section>
+      <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)', fontWeight: 500, marginTop: '0.25rem' }}>
+        {stat.label}
+      </div>
+    </motion.div>
   );
+}
+
+const timeline = [
+  { year: '2022', event: 'Started B.E. in Computer Engineering', icon: '🎓' },
+  { year: '2024', event: 'Built first full-stack project — LinkLoom (MERN + WebRTC)', icon: '🚀' },
+  { year: '2025', event: 'Ventured into AI/ML — shipped AI Traffic Management System', icon: '🤖' },
+  { year: '2025', event: 'Joined DoCodeAgo as Full Stack Developer', icon: '💼' },
+  { year: '2026', event: 'Building AI-powered SaaS products & open source tools', icon: '⚡' },
+];
+
+const itemVariants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: (i: number) => ({ opacity: 1, x: 0, transition: { duration: 0.5, delay: i * 0.12 } }),
 };
 
-export default AboutSection;
+export default function AboutSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-100px' });
+
+  return (
+    <section id="about" className="section">
+      <div className="container">
+        <motion.div
+          ref={ref}
+          initial={{ opacity: 0, y: 30 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+        >
+          {/* Section header */}
+          <div style={{ marginBottom: '3.5rem' }}>
+            <div className="section-label">✦ About Me</div>
+            <h2 className="section-title">Who I Am</h2>
+            <p className="section-subtitle">
+              A passionate builder who loves turning complex problems into elegant, user-friendly solutions.
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'start' }}>
+            {/* Left: Story + Stats */}
+            <div>
+              {personalInfo.about.split('\n\n').map((para, i) => (
+                <motion.p
+                  key={i}
+                  custom={i}
+                  variants={itemVariants}
+                  initial="hidden"
+                  animate={inView ? 'visible' : 'hidden'}
+                  style={{ color: 'var(--text-secondary)', lineHeight: 1.75, marginBottom: '1.25rem', fontSize: '0.9375rem' }}
+                >
+                  {para}
+                </motion.p>
+              ))}
+
+              {/* Quick Facts */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={inView ? { opacity: 1 } : {}}
+                transition={{ delay: 0.4 }}
+                style={{ display: 'flex', flexWrap: 'wrap', gap: '0.625rem', marginTop: '1.5rem' }}
+              >
+                {['Full Stack Dev', 'AI Enthusiast', 'Open Source Contributor', 'TypeScript Lover', 'React Expert', 'Python Dev'].map(fact => (
+                  <span key={fact} className="badge">
+                    {fact}
+                  </span>
+                ))}
+              </motion.div>
+
+              {/* Stat Cards */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.875rem', marginTop: '2rem' }}>
+                {personalInfo.stats.map((stat, i) => (
+                  <StatCard key={stat.label} stat={stat} index={i} />
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Timeline */}
+            <div>
+              <h3 style={{ fontSize: '1.0625rem', fontWeight: 700, marginBottom: '1.75rem', color: 'var(--text)' }}>
+                My Journey
+              </h3>
+              <div style={{ position: 'relative', paddingLeft: '3rem' }}>
+                {/* Timeline line */}
+                <div className="timeline-line" />
+
+                {timeline.map((item, i) => (
+                  <motion.div
+                    key={i}
+                    custom={i}
+                    variants={itemVariants}
+                    initial="hidden"
+                    animate={inView ? 'visible' : 'hidden'}
+                    style={{ position: 'relative', paddingBottom: i < timeline.length - 1 ? '2rem' : 0 }}
+                  >
+                    {/* Dot */}
+                    <div className="timeline-dot" style={{ position: 'absolute', left: '-2.875rem', top: '4px' }} />
+
+                    <div className="card" style={{ padding: '1rem 1.25rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.35rem' }}>
+                        <span style={{ fontSize: '1rem' }}>{item.icon}</span>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--primary)', fontFamily: 'var(--font-mono)', letterSpacing: '0.05em' }}>{item.year}</span>
+                      </div>
+                      <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>{item.event}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      <style>{`
+        @media (max-width: 900px) {
+          #about .container > div > div[style*="grid-template-columns: 1fr 1fr"] {
+            grid-template-columns: 1fr !important;
+            gap: 2rem !important;
+          }
+        }
+      `}</style>
+    </section>
+  );
+}
